@@ -1,0 +1,103 @@
+import { Settings, MessageSquare } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import defaultAvatar from "@/assets/default-avatar.png";
+
+interface ProfileCardProps {
+  name?: string;
+  username?: string;
+  jerseyNumber?: number;
+  nationality?: string;
+  level?: number;
+  xp?: number;
+  maxXp?: number;
+  avatarUrl?: string;
+}
+
+export const ProfileCard = ({
+  name = "John Doe",
+  username = "player123456",
+  jerseyNumber = 7,
+  nationality = "🇺🇸",
+  level = 7,
+  xp = 294220,
+  maxXp = 300000,
+  avatarUrl,
+}: ProfileCardProps) => {
+  const xpPercentage = (xp / maxXp) * 100;
+
+  return (
+    <Card className="relative overflow-hidden gradient-card border-2 border-primary/30 p-6 animate-fade-in">
+      {/* Background shine effect */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-transparent" />
+      </div>
+
+      <div className="relative z-10">
+        {/* Header Icons */}
+        <div className="flex justify-between items-start mb-6">
+          <div className="flex gap-2">
+            <button className="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 transition-all flex items-center justify-center backdrop-blur-sm">
+              <Settings className="w-5 h-5 text-foreground" />
+            </button>
+            <button className="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 transition-all flex items-center justify-center backdrop-blur-sm">
+              <MessageSquare className="w-5 h-5 text-foreground" />
+            </button>
+          </div>
+          <Badge className="bg-white/10 backdrop-blur-sm text-foreground border-white/20 text-lg px-3 py-1">
+            {nationality}
+          </Badge>
+        </div>
+
+        {/* Avatar and Info */}
+        <div className="flex items-center gap-6">
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary to-accent rounded-full blur-xl opacity-50 animate-pulse" />
+            <Avatar className="w-28 h-28 border-4 border-primary relative z-10">
+              <AvatarImage src={avatarUrl || defaultAvatar} alt={name} />
+              <AvatarFallback className="bg-primary/20 text-2xl font-bold">
+                {name.split(' ').map(n => n[0]).join('')}
+              </AvatarFallback>
+            </Avatar>
+          </div>
+
+          <div className="flex-1">
+            <h2 className="text-3xl font-bold text-foreground mb-1 text-glow">
+              {username}
+            </h2>
+            <div className="flex items-center gap-4 mb-4">
+              <Badge className="bg-accent text-accent-foreground font-bold text-lg px-4 py-1">
+                #{jerseyNumber}
+              </Badge>
+            </div>
+
+            {/* Level & XP */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-accent to-amber-400 flex items-center justify-center font-bold text-xl shadow-lg">
+                    {level}
+                  </div>
+                  <span className="text-sm font-semibold text-muted-foreground">World Star</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <span className="text-accent text-xl font-bold">👑</span>
+                  <span className="text-foreground font-bold">{xp.toLocaleString()}</span>
+                </div>
+              </div>
+              
+              {/* Progress bar */}
+              <div className="h-3 bg-muted/30 rounded-full overflow-hidden backdrop-blur-sm">
+                <div 
+                  className="h-full bg-gradient-to-r from-accent to-amber-400 rounded-full transition-all duration-500 shadow-lg"
+                  style={{ width: `${xpPercentage}%` }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Card>
+  );
+};

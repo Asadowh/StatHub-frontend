@@ -1,12 +1,48 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { ProfileCard } from "@/components/ProfileCard";
+import { StatsGrid } from "@/components/StatsGrid";
+import { NavigationCards } from "@/components/NavigationCards";
+import { NewsFeed } from "@/components/NewsFeed";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="border-b border-primary/20 backdrop-blur-sm sticky top-0 z-50 bg-background/80">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-bold text-primary text-glow">PLAYER PROFILE</h1>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">Season 2024/25</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="container mx-auto px-4 py-8">
+        <div className="max-w-7xl mx-auto space-y-8">
+          {/* Profile Section */}
+          <ProfileCard />
+
+          {/* Stats Grid */}
+          <StatsGrid />
+
+          {/* Navigation Cards */}
+          <NavigationCards />
+
+          {/* News Feed */}
+          <NewsFeed />
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="border-t border-primary/20 mt-16 py-6 bg-card/30 backdrop-blur-sm">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-sm text-muted-foreground">
+            Track your journey • Compete with friends • Achieve greatness
+          </p>
+        </div>
+      </footer>
     </div>
   );
 };
