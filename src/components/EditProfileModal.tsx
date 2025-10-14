@@ -97,30 +97,27 @@ export const EditProfileModal = ({ profileData, onSave }: EditProfileModalProps)
               <Label htmlFor="jersey">Jersey Number</Label>
               <Input
                 id="jersey"
-                type="number"
-                min="1"
-                max="99"
-                value={formData.jerseyNumber}
+                type="text"
+                inputMode="numeric"
+                value={formData.jerseyNumber === 0 ? '' : formData.jerseyNumber}
                 onChange={(e) => {
                   const value = e.target.value;
-                  // Allow empty input while typing
+                  // Allow empty or only numbers
                   if (value === '') {
-                    setFormData({ ...formData, jerseyNumber: 1 });
-                  } else {
+                    setFormData({ ...formData, jerseyNumber: 0 });
+                  } else if (/^\d+$/.test(value)) {
                     const numValue = parseInt(value);
-                    // Allow any input while typing, clamp on blur
-                    if (!isNaN(numValue)) {
-                      setFormData({ ...formData, jerseyNumber: numValue });
-                    }
+                    setFormData({ ...formData, jerseyNumber: numValue });
                   }
                 }}
                 onBlur={(e) => {
                   // Validate and clamp when user finishes editing
-                  let value = parseInt(e.target.value);
-                  if (isNaN(value) || value < 1) value = 1;
+                  let value = formData.jerseyNumber;
+                  if (value < 1) value = 1;
                   if (value > 99) value = 99;
                   setFormData({ ...formData, jerseyNumber: value });
                 }}
+                placeholder="1-99"
                 className="bg-background border-border"
               />
             </div>
