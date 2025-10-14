@@ -59,15 +59,21 @@ export const ProfileCard = ({
 
   return (
     <Card className="relative overflow-hidden border-2 border-primary/30 p-6 animate-fade-in">
-      {/* Dynamic flag-colored background */}
-      <div className="absolute inset-0 opacity-20">
+      {/* Dynamic flag-colored background - more prominent */}
+      <div className="absolute inset-0 opacity-30">
+        <div 
+          className="absolute inset-0 blur-2xl" 
+          style={{ background: flagGradient }}
+        />
+      </div>
+      <div className="absolute inset-0 opacity-40">
         <div 
           className="absolute inset-0" 
           style={{ background: flagGradient }}
         />
       </div>
       {/* Overlay gradient for better text readability */}
-      <div className="absolute inset-0 bg-gradient-to-br from-card/80 via-card/60 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-br from-background/50 via-background/30 to-transparent backdrop-blur-sm" />
 
       <div className="relative z-10">
         {/* Header Icons */}
