@@ -12,8 +12,9 @@ interface ProfileCardProps {
   username?: string;
   jerseyNumber?: number;
   nationality?: string;
-  yearOfBirth?: number;
-  age?: number;
+  birthDay?: number;
+  birthMonth?: number;
+  birthYear?: number;
   height?: string;
   favoritePosition?: string;
   level?: number;
@@ -27,8 +28,9 @@ export const ProfileCard = ({
   username: initialUsername = "CR7",
   jerseyNumber: initialJerseyNumber = 7,
   nationality: initialNationality = "🇵🇹",
-  yearOfBirth: initialYearOfBirth = 1985,
-  age: initialAge = 39,
+  birthDay: initialBirthDay = 5,
+  birthMonth: initialBirthMonth = 2,
+  birthYear: initialBirthYear = 1985,
   height: initialHeight = "187 cm",
   favoritePosition: initialPosition = "Forward",
   level: initialLevel = 10,
@@ -41,8 +43,9 @@ export const ProfileCard = ({
     username: initialUsername,
     jerseyNumber: initialJerseyNumber,
     nationality: initialNationality,
-    yearOfBirth: initialYearOfBirth,
-    age: initialAge,
+    birthDay: initialBirthDay,
+    birthMonth: initialBirthMonth,
+    birthYear: initialBirthYear,
     height: initialHeight,
     favoritePosition: initialPosition,
     level: initialLevel,
@@ -51,30 +54,25 @@ export const ProfileCard = ({
 
   const xpPercentage = (profileData.xp / maxXp) * 100;
 
-  // Get country data for dynamic background
+  // Get country data to display country code
   const countryData = findCountryByName(profileData.nationality);
-  const flagGradient = countryData 
-    ? getGradientFromColors(countryData.colors)
-    : "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)))";
+  
+  // Calculate age from birthday
+  const calculateAge = () => {
+    const today = new Date();
+    const birthDate = new Date(profileData.birthYear, profileData.birthMonth - 1, profileData.birthDay);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
   return (
     <Card className="relative overflow-hidden border-2 border-primary/30 p-6 animate-fade-in">
-      {/* Dynamic flag-colored background - more prominent */}
-      <div className="absolute inset-0 opacity-30">
-        <div 
-          className="absolute inset-0 blur-2xl" 
-          style={{ background: flagGradient }}
-        />
-      </div>
-      <div className="absolute inset-0 opacity-40">
-        <div 
-          className="absolute inset-0" 
-          style={{ background: flagGradient }}
-        />
-      </div>
-      {/* Overlay gradient for better text readability */}
-      <div className="absolute inset-0 bg-gradient-to-br from-background/50 via-background/30 to-transparent backdrop-blur-sm" />
-
       <div className="relative z-10">
         {/* Header Icons */}
         <div className="flex justify-between items-start mb-6">
@@ -85,7 +83,7 @@ export const ProfileCard = ({
             </button>
           </div>
           <Badge className="bg-white/10 backdrop-blur-sm text-foreground border-white/20 text-lg px-3 py-1">
-            {profileData.nationality}
+            {profileData.nationality} {countryData?.code || ''}
           </Badge>
         </div>
 
@@ -119,8 +117,8 @@ export const ProfileCard = ({
                 <span className="text-sm font-semibold text-foreground">{profileData.favoritePosition}</span>
               </div>
               <div className="flex flex-col">
-                <span className="text-xs text-muted-foreground">Age</span>
-                <span className="text-sm font-semibold text-foreground">{profileData.age} ({profileData.yearOfBirth})</span>
+                <span className="text-xs text-muted-foreground">Birthday</span>
+                <span className="text-sm font-semibold text-foreground">{profileData.birthDay} {monthNames[profileData.birthMonth - 1]} {profileData.birthYear} ({calculateAge()})</span>
               </div>
               <div className="flex flex-col">
                 <span className="text-xs text-muted-foreground">Height</span>

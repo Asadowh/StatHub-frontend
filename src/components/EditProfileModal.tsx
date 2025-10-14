@@ -12,8 +12,9 @@ interface ProfileData {
   username: string;
   jerseyNumber: number;
   nationality: string;
-  yearOfBirth: number;
-  age: number;
+  birthDay: number;
+  birthMonth: number;
+  birthYear: number;
   height: string;
   favoritePosition: string;
   level: number;
@@ -31,15 +32,6 @@ export const EditProfileModal = ({ profileData, onSave }: EditProfileModalProps)
   const [nationalityInput, setNationalityInput] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredCountries, setFilteredCountries] = useState<CountryData[]>([]);
-
-  // Auto-calculate age when year of birth changes
-  useEffect(() => {
-    const currentYear = new Date().getFullYear();
-    const calculatedAge = currentYear - formData.yearOfBirth;
-    if (calculatedAge !== formData.age && calculatedAge > 0 && calculatedAge < 150) {
-      setFormData(prev => ({ ...prev, age: calculatedAge }));
-    }
-  }, [formData.yearOfBirth]);
 
   const handleNationalityChange = (value: string) => {
     setNationalityInput(value);
@@ -149,26 +141,42 @@ export const EditProfileModal = ({ profileData, onSave }: EditProfileModalProps)
               )}
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="yearOfBirth">Year of Birth</Label>
-              <Input
-                id="yearOfBirth"
-                type="number"
-                value={formData.yearOfBirth}
-                onChange={(e) => setFormData({ ...formData, yearOfBirth: parseInt(e.target.value) })}
-                className="bg-background border-border"
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="age">Age (auto-calculated)</Label>
-              <Input
-                id="age"
-                type="number"
-                value={formData.age}
-                disabled
-                className="bg-background border-border opacity-70"
-              />
+          <div className="grid gap-2">
+            <Label>Birthday</Label>
+            <div className="grid grid-cols-3 gap-2">
+              <div>
+                <Input
+                  type="number"
+                  placeholder="Day"
+                  min="1"
+                  max="31"
+                  value={formData.birthDay}
+                  onChange={(e) => setFormData({ ...formData, birthDay: parseInt(e.target.value) || 1 })}
+                  className="bg-background border-border"
+                />
+              </div>
+              <div>
+                <Input
+                  type="number"
+                  placeholder="Month"
+                  min="1"
+                  max="12"
+                  value={formData.birthMonth}
+                  onChange={(e) => setFormData({ ...formData, birthMonth: parseInt(e.target.value) || 1 })}
+                  className="bg-background border-border"
+                />
+              </div>
+              <div>
+                <Input
+                  type="number"
+                  placeholder="Year"
+                  min="1900"
+                  max="2024"
+                  value={formData.birthYear}
+                  onChange={(e) => setFormData({ ...formData, birthYear: parseInt(e.target.value) || 2000 })}
+                  className="bg-background border-border"
+                />
+              </div>
             </div>
           </div>
           <div className="grid gap-2">

@@ -121,7 +121,7 @@ export const NewsFeed = () => {
         </h2>
       </div>
       
-      <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
+      <div className="space-y-4">
         {newsItems.map((item, index) => (
           <NewsItem key={index} {...item} />
         ))}
