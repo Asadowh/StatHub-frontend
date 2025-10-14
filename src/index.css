@@ -8,43 +8,45 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 210 100% 12%;
-    --foreground: 210 40% 98%;
+    --background: 210 29% 6%;
+    --foreground: 0 0% 93%;
 
-    --card: 215 50% 18%;
-    --card-foreground: 210 40% 98%;
+    --card: 210 29% 10%;
+    --card-foreground: 0 0% 93%;
 
-    --popover: 215 50% 18%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 210 29% 10%;
+    --popover-foreground: 0 0% 93%;
 
-    --primary: 195 100% 50%;
-    --primary-foreground: 210 100% 12%;
+    --primary: 152 100% 50%;
+    --primary-foreground: 210 29% 6%;
 
-    --secondary: 215 25% 30%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 210 29% 15%;
+    --secondary-foreground: 0 0% 93%;
 
-    --muted: 215 25% 25%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 210 29% 12%;
+    --muted-foreground: 210 15% 60%;
 
-    --accent: 45 95% 55%;
-    --accent-foreground: 210 100% 12%;
+    --accent: 51 100% 50%;
+    --accent-foreground: 210 29% 6%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 93%;
 
-    --border: 215 30% 25%;
-    --input: 215 30% 25%;
-    --ring: 195 100% 50%;
+    --border: 210 29% 15%;
+    --input: 210 29% 15%;
+    --ring: 152 100% 50%;
 
     --radius: 1rem;
     
     /* Custom gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(210 100% 25%), hsl(195 100% 35%));
-    --gradient-card: linear-gradient(145deg, hsl(215 50% 20%), hsl(215 50% 16%));
-    --gradient-shine: linear-gradient(120deg, transparent, hsla(195 100% 70% / 0.3), transparent);
+    --gradient-primary: linear-gradient(135deg, hsl(210 29% 8%), hsl(152 100% 20%));
+    --gradient-card: linear-gradient(145deg, hsl(210 29% 12%), hsl(210 29% 8%));
+    --gradient-shine: linear-gradient(120deg, transparent, hsla(152 100% 50% / 0.3), transparent);
+    --gradient-gold: linear-gradient(135deg, hsl(51 100% 50%), hsl(45 100% 60%));
     
     /* Shadows */
-    --shadow-glow: 0 8px 32px hsla(195 100% 50% / 0.3);
+    --shadow-glow: 0 8px 32px hsla(152 100% 50% / 0.4);
+    --shadow-gold: 0 8px 32px hsla(51 100% 50% / 0.3);
     --shadow-card: 0 10px 30px hsla(0 0% 0% / 0.5);
 
     --sidebar-background: 0 0% 98%;
