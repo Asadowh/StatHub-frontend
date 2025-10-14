@@ -12,7 +12,7 @@ const Index = () => {
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold flex items-center gap-0">
               <span className="text-white">Stat</span>
-              <span className="bg-[#FF9900] text-black px-2 py-0.5 rounded">hub</span>
+              <span className="text-[#FF9900]">hub</span>
             </h1>
             <div className="flex items-center gap-2">
               <span className="text-sm text-muted-foreground">Season 2024/25</span>
