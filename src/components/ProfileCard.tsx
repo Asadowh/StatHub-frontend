@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import ronaldoAvatar from "@/assets/ronaldo-avatar.png";
 import { EditProfileModal } from "./EditProfileModal";
 import { useState } from "react";
+import { findCountryByName, getGradientFromColors } from "@/lib/countryData";
 
 interface ProfileCardProps {
   name?: string;
@@ -50,12 +51,23 @@ export const ProfileCard = ({
 
   const xpPercentage = (profileData.xp / maxXp) * 100;
 
+  // Get country data for dynamic background
+  const countryData = findCountryByName(profileData.nationality);
+  const flagGradient = countryData 
+    ? getGradientFromColors(countryData.colors)
+    : "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)))";
+
   return (
-    <Card className="relative overflow-hidden gradient-card border-2 border-primary/30 p-6 animate-fade-in">
-      {/* Background shine effect */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-transparent" />
+    <Card className="relative overflow-hidden border-2 border-primary/30 p-6 animate-fade-in">
+      {/* Dynamic flag-colored background */}
+      <div className="absolute inset-0 opacity-20">
+        <div 
+          className="absolute inset-0" 
+          style={{ background: flagGradient }}
+        />
       </div>
+      {/* Overlay gradient for better text readability */}
+      <div className="absolute inset-0 bg-gradient-to-br from-card/80 via-card/60 to-transparent" />
 
       <div className="relative z-10">
         {/* Header Icons */}

@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Settings } from "lucide-react";
+import { findCountryByName } from "@/lib/countryData";
 
 interface ProfileData {
   name: string;
@@ -26,6 +27,24 @@ interface EditProfileModalProps {
 export const EditProfileModal = ({ profileData, onSave }: EditProfileModalProps) => {
   const [formData, setFormData] = useState(profileData);
   const [open, setOpen] = useState(false);
+  const [nationalityInput, setNationalityInput] = useState("");
+
+  // Auto-calculate age when year of birth changes
+  useEffect(() => {
+    const currentYear = new Date().getFullYear();
+    const calculatedAge = currentYear - formData.yearOfBirth;
+    if (calculatedAge !== formData.age && calculatedAge > 0 && calculatedAge < 150) {
+      setFormData(prev => ({ ...prev, age: calculatedAge }));
+    }
+  }, [formData.yearOfBirth]);
+
+  const handleNationalityChange = (value: string) => {
+    setNationalityInput(value);
+    const country = findCountryByName(value);
+    if (country) {
+      setFormData({ ...formData, nationality: country.flag });
+    }
+  };
 
   const handleSave = () => {
     onSave(formData);
@@ -77,10 +96,16 @@ export const EditProfileModal = ({ profileData, onSave }: EditProfileModalProps)
               <Label htmlFor="nationality">Nationality</Label>
               <Input
                 id="nationality"
-                value={formData.nationality}
-                onChange={(e) => setFormData({ ...formData, nationality: e.target.value })}
+                placeholder="Type country name (e.g., Azerbaijan, Turkey)"
+                value={nationalityInput}
+                onChange={(e) => handleNationalityChange(e.target.value)}
                 className="bg-background border-border"
               />
+              {formData.nationality && (
+                <div className="text-sm text-muted-foreground">
+                  Selected: {formData.nationality}
+                </div>
+              )}
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
@@ -95,13 +120,13 @@ export const EditProfileModal = ({ profileData, onSave }: EditProfileModalProps)
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="age">Age</Label>
+              <Label htmlFor="age">Age (auto-calculated)</Label>
               <Input
                 id="age"
                 type="number"
                 value={formData.age}
-                onChange={(e) => setFormData({ ...formData, age: parseInt(e.target.value) })}
-                className="bg-background border-border"
+                disabled
+                className="bg-background border-border opacity-70"
               />
             </div>
           </div>
