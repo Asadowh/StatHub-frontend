@@ -1,8 +1,7 @@
-import { MessageSquare } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import ronaldoAvatar from "@/assets/ronaldo-avatar.png";
+import profileAvatar from "@/assets/profile-avatar.jpg";
 import { EditProfileModal } from "./EditProfileModal";
 import { useState } from "react";
 import { findCountryByName, getGradientFromColors } from "@/lib/countryData";
@@ -76,12 +75,7 @@ export const ProfileCard = ({
       <div className="relative z-10">
         {/* Header Icons */}
         <div className="flex justify-between items-start mb-6">
-          <div className="flex gap-2">
-            <EditProfileModal profileData={profileData} onSave={setProfileData} />
-            <button className="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 transition-all flex items-center justify-center backdrop-blur-sm">
-              <MessageSquare className="w-5 h-5 text-foreground" />
-            </button>
-          </div>
+          <EditProfileModal profileData={profileData} onSave={setProfileData} />
           <Badge className="bg-white/10 backdrop-blur-sm text-foreground border-white/20 text-lg px-3 py-1">
             {profileData.nationality} {countryData?.code || ''}
           </Badge>
@@ -92,7 +86,7 @@ export const ProfileCard = ({
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-br from-primary to-accent rounded-full blur-xl opacity-50 animate-pulse" />
             <Avatar className="w-28 h-28 border-4 border-primary relative z-10">
-              <AvatarImage src={avatarUrl || ronaldoAvatar} alt={profileData.name} />
+              <AvatarImage src={avatarUrl || profileAvatar} alt={profileData.name} />
               <AvatarFallback className="bg-primary/20 text-2xl font-bold">
                 {profileData.name.split(' ').map(n => n[0]).join('')}
               </AvatarFallback>

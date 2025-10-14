@@ -98,8 +98,15 @@ export const EditProfileModal = ({ profileData, onSave }: EditProfileModalProps)
               <Input
                 id="jersey"
                 type="number"
+                min="1"
+                max="99"
                 value={formData.jerseyNumber}
-                onChange={(e) => setFormData({ ...formData, jerseyNumber: parseInt(e.target.value) })}
+                onChange={(e) => {
+                  const value = parseInt(e.target.value);
+                  if (value >= 1 && value <= 99) {
+                    setFormData({ ...formData, jerseyNumber: value });
+                  }
+                }}
                 className="bg-background border-border"
               />
             </div>
