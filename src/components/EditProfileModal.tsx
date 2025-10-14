@@ -102,19 +102,19 @@ export const EditProfileModal = ({ profileData, onSave }: EditProfileModalProps)
                 value={formData.jerseyNumber === 0 ? '' : formData.jerseyNumber}
                 onChange={(e) => {
                   const value = e.target.value;
-                  // Allow empty or only numbers
                   if (value === '') {
                     setFormData({ ...formData, jerseyNumber: 0 });
                   } else if (/^\d+$/.test(value)) {
                     const numValue = parseInt(value);
-                    setFormData({ ...formData, jerseyNumber: numValue });
+                    // Restrict to max 99 while typing
+                    if (numValue <= 99) {
+                      setFormData({ ...formData, jerseyNumber: numValue });
+                    }
                   }
                 }}
                 onBlur={(e) => {
-                  // Validate and clamp when user finishes editing
                   let value = formData.jerseyNumber;
                   if (value < 1) value = 1;
-                  if (value > 99) value = 99;
                   setFormData({ ...formData, jerseyNumber: value });
                 }}
                 placeholder="1-99"
@@ -165,34 +165,76 @@ export const EditProfileModal = ({ profileData, onSave }: EditProfileModalProps)
             <div className="grid grid-cols-3 gap-2">
               <div>
                 <Input
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   placeholder="Day"
-                  min="1"
-                  max="31"
-                  value={formData.birthDay}
-                  onChange={(e) => setFormData({ ...formData, birthDay: parseInt(e.target.value) || 1 })}
+                  value={formData.birthDay === 0 ? '' : formData.birthDay}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value === '') {
+                      setFormData({ ...formData, birthDay: 0 });
+                    } else if (/^\d+$/.test(value)) {
+                      const numValue = parseInt(value);
+                      if (numValue <= 31) {
+                        setFormData({ ...formData, birthDay: numValue });
+                      }
+                    }
+                  }}
+                  onBlur={() => {
+                    let value = formData.birthDay;
+                    if (value < 1) value = 1;
+                    setFormData({ ...formData, birthDay: value });
+                  }}
                   className="bg-background border-border"
                 />
               </div>
               <div>
                 <Input
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   placeholder="Month"
-                  min="1"
-                  max="12"
-                  value={formData.birthMonth}
-                  onChange={(e) => setFormData({ ...formData, birthMonth: parseInt(e.target.value) || 1 })}
+                  value={formData.birthMonth === 0 ? '' : formData.birthMonth}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value === '') {
+                      setFormData({ ...formData, birthMonth: 0 });
+                    } else if (/^\d+$/.test(value)) {
+                      const numValue = parseInt(value);
+                      if (numValue <= 12) {
+                        setFormData({ ...formData, birthMonth: numValue });
+                      }
+                    }
+                  }}
+                  onBlur={() => {
+                    let value = formData.birthMonth;
+                    if (value < 1) value = 1;
+                    setFormData({ ...formData, birthMonth: value });
+                  }}
                   className="bg-background border-border"
                 />
               </div>
               <div>
                 <Input
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   placeholder="Year"
-                  min="1900"
-                  max="2024"
-                  value={formData.birthYear}
-                  onChange={(e) => setFormData({ ...formData, birthYear: parseInt(e.target.value) || 2000 })}
+                  value={formData.birthYear === 0 ? '' : formData.birthYear}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value === '') {
+                      setFormData({ ...formData, birthYear: 0 });
+                    } else if (/^\d+$/.test(value)) {
+                      const numValue = parseInt(value);
+                      if (numValue <= 2024) {
+                        setFormData({ ...formData, birthYear: numValue });
+                      }
+                    }
+                  }}
+                  onBlur={() => {
+                    let value = formData.birthYear;
+                    if (value < 1900) value = 2000;
+                    setFormData({ ...formData, birthYear: value });
+                  }}
                   className="bg-background border-border"
                 />
               </div>
