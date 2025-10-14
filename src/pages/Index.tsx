@@ -10,7 +10,10 @@ const Index = () => {
       <header className="border-b border-primary/20 backdrop-blur-sm sticky top-0 z-50 bg-background/80">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-primary text-glow">StatHub</h1>
+            <h1 className="text-2xl font-bold flex items-center gap-0">
+              <span className="text-white">Stat</span>
+              <span className="bg-[#FF9900] text-black px-2 py-0.5 rounded">hub</span>
+            </h1>
             <div className="flex items-center gap-2">
               <span className="text-sm text-muted-foreground">Season 2024/25</span>
             </div>
