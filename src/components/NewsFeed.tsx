@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Clock, ThumbsUp, MessageCircle } from "lucide-react";
-import news1 from "@/assets/news-1.png";
+import concertPic from "@/assets/concert-pic.jpg";
 import news2 from "@/assets/news-2.png";
 import news3 from "@/assets/news-3.png";
 import news4 from "@/assets/news-4.png";
@@ -67,12 +67,12 @@ export const NewsFeed = () => {
   const newsItems = [
     {
       title: "Ali's Concert Success! 🎯",
-      description: "Ali got a girl's number at the concert last night! The legend strikes again. The team is calling him the off-pitch MVP. Rumor has it she's a huge football fan too!",
+      description: "Ali bagged a girl at the concert last night with my help - coaches don't play! The wingman of the century strikes again. The whole squad knows who the real MVP is off the pitch.",
       timestamp: "2 hours ago",
       likes: 47,
       comments: 12,
       category: "Off the Pitch",
-      imageUrl: news1
+      imageUrl: concertPic
     },
     {
       title: "Marcus Scores Hat-Trick! ⚽⚽⚽",

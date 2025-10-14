@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Settings } from "lucide-react";
 import { findCountryByName, countryDatabase, type CountryData } from "@/lib/countryData";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface ProfileData {
   name: string;
@@ -190,12 +191,31 @@ export const EditProfileModal = ({ profileData, onSave }: EditProfileModalProps)
           </div>
           <div className="grid gap-2">
             <Label htmlFor="position">Favorite Position</Label>
-            <Input
-              id="position"
+            <Select
               value={formData.favoritePosition}
-              onChange={(e) => setFormData({ ...formData, favoritePosition: e.target.value })}
-              className="bg-background border-border"
-            />
+              onValueChange={(value) => setFormData({ ...formData, favoritePosition: value })}
+            >
+              <SelectTrigger className="bg-background border-border">
+                <SelectValue placeholder="Select position" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="GK">GK - Goalkeeper</SelectItem>
+                <SelectItem value="RB">RB - Right Back</SelectItem>
+                <SelectItem value="CB">CB - Center Back</SelectItem>
+                <SelectItem value="LB">LB - Left Back</SelectItem>
+                <SelectItem value="RWB">RWB - Right Wing Back</SelectItem>
+                <SelectItem value="LWB">LWB - Left Wing Back</SelectItem>
+                <SelectItem value="CDM">CDM - Defensive Midfielder</SelectItem>
+                <SelectItem value="CM">CM - Center Midfielder</SelectItem>
+                <SelectItem value="CAM">CAM - Attacking Midfielder</SelectItem>
+                <SelectItem value="RM">RM - Right Midfielder</SelectItem>
+                <SelectItem value="LM">LM - Left Midfielder</SelectItem>
+                <SelectItem value="RW">RW - Right Winger</SelectItem>
+                <SelectItem value="LW">LW - Left Winger</SelectItem>
+                <SelectItem value="ST">ST - Striker</SelectItem>
+                <SelectItem value="CF">CF - Center Forward</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
         <div className="flex gap-3">
