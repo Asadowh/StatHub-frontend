@@ -86,7 +86,7 @@ export const ProfileCard = ({
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-br from-primary to-accent rounded-full blur-xl opacity-50 animate-pulse" />
             <Avatar className="w-28 h-28 border-4 border-primary relative z-10">
-              <AvatarImage src={avatarUrl || profileAvatar} alt={profileData.name} />
+              <AvatarImage src={avatarUrl || profileAvatar} alt={profileData.name} className="object-cover" />
               <AvatarFallback className="bg-primary/20 text-2xl font-bold">
                 {profileData.name.split(' ').map(n => n[0]).join('')}
               </AvatarFallback>

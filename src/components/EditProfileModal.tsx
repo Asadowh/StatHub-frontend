@@ -102,10 +102,24 @@ export const EditProfileModal = ({ profileData, onSave }: EditProfileModalProps)
                 max="99"
                 value={formData.jerseyNumber}
                 onChange={(e) => {
-                  const value = parseInt(e.target.value);
-                  if (value >= 1 && value <= 99) {
-                    setFormData({ ...formData, jerseyNumber: value });
+                  const value = e.target.value;
+                  // Allow empty input while typing
+                  if (value === '') {
+                    setFormData({ ...formData, jerseyNumber: 1 });
+                  } else {
+                    const numValue = parseInt(value);
+                    // Allow any input while typing, clamp on blur
+                    if (!isNaN(numValue)) {
+                      setFormData({ ...formData, jerseyNumber: numValue });
+                    }
                   }
+                }}
+                onBlur={(e) => {
+                  // Validate and clamp when user finishes editing
+                  let value = parseInt(e.target.value);
+                  if (isNaN(value) || value < 1) value = 1;
+                  if (value > 99) value = 99;
+                  setFormData({ ...formData, jerseyNumber: value });
                 }}
                 className="bg-background border-border"
               />
