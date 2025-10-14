@@ -9,6 +9,10 @@ interface ProfileCardProps {
   username?: string;
   jerseyNumber?: number;
   nationality?: string;
+  yearOfBirth?: number;
+  age?: number;
+  height?: string;
+  favoritePosition?: string;
   level?: number;
   xp?: number;
   maxXp?: number;
@@ -16,10 +20,14 @@ interface ProfileCardProps {
 }
 
 export const ProfileCard = ({
-  name = "John Doe",
-  username = "player123456",
-  jerseyNumber = 7,
-  nationality = "🇺🇸",
+  name = "Marcus Rodriguez",
+  username = "marcusR10",
+  jerseyNumber = 10,
+  nationality = "🇪🇸",
+  yearOfBirth = 2001,
+  age = 23,
+  height = "183 cm",
+  favoritePosition = "Attacking Midfielder",
   level = 7,
   xp = 294220,
   maxXp = 300000,
@@ -64,12 +72,29 @@ export const ProfileCard = ({
 
           <div className="flex-1">
             <h2 className="text-3xl font-bold text-foreground mb-1 text-glow">
-              {username}
+              {name}
             </h2>
-            <div className="flex items-center gap-4 mb-4">
-              <Badge className="bg-accent text-accent-foreground font-bold text-lg px-4 py-1">
-                #{jerseyNumber}
-              </Badge>
+            <p className="text-muted-foreground text-sm mb-3">@{username}</p>
+            
+            <div className="grid grid-cols-2 gap-3 mb-4">
+              <div className="flex items-center gap-2">
+                <Badge className="bg-accent text-accent-foreground font-bold text-lg px-3 py-1">
+                  #{jerseyNumber}
+                </Badge>
+                <span className="text-sm text-muted-foreground">Jersey</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xs text-muted-foreground">Position</span>
+                <span className="text-sm font-semibold text-foreground">{favoritePosition}</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xs text-muted-foreground">Age</span>
+                <span className="text-sm font-semibold text-foreground">{age} ({yearOfBirth})</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xs text-muted-foreground">Height</span>
+                <span className="text-sm font-semibold text-foreground">{height}</span>
+              </div>
             </div>
 
             {/* Level & XP */}

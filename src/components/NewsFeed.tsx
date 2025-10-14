@@ -1,44 +1,62 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Clock, ThumbsUp, MessageCircle } from "lucide-react";
+import news1 from "@/assets/news-1.png";
+import news2 from "@/assets/news-2.png";
+import news3 from "@/assets/news-3.png";
+import news4 from "@/assets/news-4.png";
+import news5 from "@/assets/news-5.png";
 
 interface NewsItemProps {
   title: string;
+  description: string;
   timestamp: string;
   likes?: number;
   comments?: number;
   category?: string;
+  imageUrl?: string;
 }
 
-const NewsItem = ({ title, timestamp, likes = 0, comments = 0, category = "Team News" }: NewsItemProps) => {
+const NewsItem = ({ title, description, timestamp, likes = 0, comments = 0, category = "Team News", imageUrl }: NewsItemProps) => {
   return (
-    <Card className="gradient-card border-2 border-primary/20 p-5 hover:border-primary/40 transition-all cursor-pointer group">
-      <div className="flex items-start gap-4">
-        <div className="flex-1">
-          <div className="flex items-center gap-2 mb-2">
-            <Badge className="bg-accent/20 text-accent border-accent/30 text-xs">
-              {category}
-            </Badge>
-            <div className="flex items-center gap-1 text-muted-foreground text-xs">
-              <Clock className="w-3 h-3" />
-              <span>{timestamp}</span>
-            </div>
+    <Card className="gradient-card border-2 border-primary/20 overflow-hidden hover:border-primary/40 transition-all cursor-pointer group">
+      {imageUrl && (
+        <div className="w-full h-48 overflow-hidden">
+          <img 
+            src={imageUrl} 
+            alt={title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+      )}
+      <div className="p-5">
+        <div className="flex items-center gap-2 mb-3">
+          <Badge className="bg-accent/20 text-accent border-accent/30 text-xs">
+            {category}
+          </Badge>
+          <div className="flex items-center gap-1 text-muted-foreground text-xs">
+            <Clock className="w-3 h-3" />
+            <span>{timestamp}</span>
           </div>
-          
-          <p className="text-foreground font-medium group-hover:text-primary transition-colors leading-relaxed">
-            {title}
-          </p>
-          
-          <div className="flex items-center gap-4 mt-3">
-            <button className="flex items-center gap-1 text-muted-foreground hover:text-accent transition-colors">
-              <ThumbsUp className="w-4 h-4" />
-              <span className="text-sm">{likes}</span>
-            </button>
-            <button className="flex items-center gap-1 text-muted-foreground hover:text-primary transition-colors">
-              <MessageCircle className="w-4 h-4" />
-              <span className="text-sm">{comments}</span>
-            </button>
-          </div>
+        </div>
+        
+        <h3 className="text-foreground font-bold text-lg group-hover:text-primary transition-colors mb-2">
+          {title}
+        </h3>
+        
+        <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+          {description}
+        </p>
+        
+        <div className="flex items-center gap-4">
+          <button className="flex items-center gap-1 text-muted-foreground hover:text-accent transition-colors">
+            <ThumbsUp className="w-4 h-4" />
+            <span className="text-sm font-semibold">{likes}</span>
+          </button>
+          <button className="flex items-center gap-1 text-muted-foreground hover:text-primary transition-colors">
+            <MessageCircle className="w-4 h-4" />
+            <span className="text-sm font-semibold">{comments}</span>
+          </button>
         </div>
       </div>
     </Card>
@@ -48,39 +66,49 @@ const NewsItem = ({ title, timestamp, likes = 0, comments = 0, category = "Team 
 export const NewsFeed = () => {
   const newsItems = [
     {
-      title: "Ali got a girl's number at the concert last night! The legend strikes again 🎯",
+      title: "Ali's Concert Success! 🎯",
+      description: "Ali got a girl's number at the concert last night! The legend strikes again. The team is calling him the off-pitch MVP. Rumor has it she's a huge football fan too!",
       timestamp: "2 hours ago",
       likes: 47,
       comments: 12,
-      category: "Off the Pitch"
+      category: "Off the Pitch",
+      imageUrl: news1
     },
     {
-      title: "Marcus scored his first hat-trick in training today. Coach is impressed! ⚽⚽⚽",
+      title: "Marcus Scores Hat-Trick! ⚽⚽⚽",
+      description: "Marcus scored his first hat-trick in training today and coach is seriously impressed! Three incredible goals in 15 minutes. The striker is on fire and ready for the weekend match.",
       timestamp: "5 hours ago",
       likes: 89,
       comments: 23,
-      category: "Training"
+      category: "Training",
+      imageUrl: news2
     },
     {
-      title: "Team dinner got wild - Someone ordered 15 pizzas and we still ran out 🍕",
+      title: "Pizza Party Chaos! 🍕",
+      description: "Team dinner got absolutely wild last night. Someone ordered 15 large pizzas and we STILL ran out! The whole squad was starving after that intense practice session.",
       timestamp: "1 day ago",
       likes: 156,
       comments: 34,
-      category: "Team Life"
+      category: "Team Life",
+      imageUrl: news3
     },
     {
-      title: "Jake's new celebration dance went viral on TikTok! 1M views already 🕺",
+      title: "Jake Goes Viral! 🕺",
+      description: "Jake's new celebration dance has taken TikTok by storm with over 1 million views already! The whole team is trying to learn it for the next match. Prepare for stadium-wide dance-offs!",
       timestamp: "2 days ago",
       likes: 203,
       comments: 45,
-      category: "Social Media"
+      category: "Social Media",
+      imageUrl: news4
     },
     {
-      title: "Pre-match ritual: Team decided to watch Rocky IV for good luck. It worked last time!",
+      title: "Rocky IV Pre-Match Ritual 🥊",
+      description: "Team tradition continues! We're watching Rocky IV before tomorrow's big match. It worked last time and the energy was incredible. If it ain't broke, don't fix it!",
       timestamp: "3 days ago",
       likes: 78,
       comments: 19,
-      category: "Team Traditions"
+      category: "Team Traditions",
+      imageUrl: news5
     }
   ];
 
