@@ -15,7 +15,7 @@ const Index = () => {
               <span className="text-[#FF9900]">Hub</span>
             </h1>
             <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">Season 2024/25</span>
+              <span className="text-sm text-muted-foreground">Season 25/26</span>
             </div>
           </div>
         </div>
