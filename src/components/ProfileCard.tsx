@@ -118,6 +118,10 @@ export const ProfileCard = ({
                 <span className="text-xs text-muted-foreground">Height</span>
                 <span className="text-sm font-semibold text-foreground">{profileData.height}</span>
               </div>
+              <div className="flex flex-col">
+                <span className="text-xs text-muted-foreground">Nationality</span>
+                <span className="text-sm font-semibold text-foreground">🇵🇹 Portugal</span>
+              </div>
             </div>
 
             {/* Level & XP */}

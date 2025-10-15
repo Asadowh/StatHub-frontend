@@ -48,8 +48,7 @@ const Profile = () => {
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 <div className="flex items-center gap-2 text-sm">
                   <MapPin className="w-4 h-4 text-primary" />
-                  <CountryBadge code="AZ" />
-                  <span className="text-muted-foreground">Azerbaijan</span>
+                  <span className="text-muted-foreground">Azerbaijan 🇦🇿</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <Calendar className="w-4 h-4 text-primary" />
