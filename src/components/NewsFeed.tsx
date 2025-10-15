@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Clock, ThumbsUp, MessageCircle } from "lucide-react";
@@ -18,8 +19,13 @@ interface NewsItemProps {
 }
 
 const NewsItem = ({ title, description, timestamp, likes = 0, comments = 0, category = "Team News", imageUrl }: NewsItemProps) => {
+  const navigate = useNavigate();
+  
   return (
-    <Card className="gradient-card border-2 border-primary/20 overflow-hidden hover:border-primary/40 transition-all cursor-pointer group">
+    <Card 
+      onClick={() => navigate('/news')}
+      className="gradient-card border-2 border-primary/20 overflow-hidden hover:border-primary/40 transition-all cursor-pointer group"
+    >
       {imageUrl && (
         <div className="w-full h-48 overflow-hidden">
           <img 
