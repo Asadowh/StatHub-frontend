@@ -3,17 +3,18 @@ import { TrendingUp, TrendingDown, Minus } from "lucide-react";
 
 interface Match {
   id: number;
-  opponent: string;
+  homeTeam: string;
+  awayTeam: string;
+  homeScore: number;
+  awayScore: number;
   date: string;
   rating: number;
-  result: "W" | "L" | "D";
-  competition: string;
 }
 
 const recentMatches: Match[] = [
-  { id: 1, opponent: "Blue Tigers", date: "May 12", rating: 8.5, result: "W", competition: "League" },
-  { id: 2, opponent: "Red Dragons", date: "May 9", rating: 7.2, result: "D", competition: "Cup" },
-  { id: 3, opponent: "Green Eagles", date: "May 5", rating: 9.1, result: "W", competition: "League" },
+  { id: 1, homeTeam: "Blue Tigers", awayTeam: "Red Dragons", homeScore: 3, awayScore: 1, date: "May 12", rating: 8.5 },
+  { id: 2, homeTeam: "Green Eagles", awayTeam: "Yellow Wolves", homeScore: 2, awayScore: 2, date: "May 9", rating: 7.2 },
+  { id: 3, homeTeam: "Black Panthers", awayTeam: "White Sharks", homeScore: 4, awayScore: 0, date: "May 5", rating: 9.1 },
 ];
 
 const getTrendIcon = (rating: number) => {
@@ -22,10 +23,10 @@ const getTrendIcon = (rating: number) => {
   return <TrendingDown className="w-4 h-4 text-red-500" />;
 };
 
-const getResultColor = (result: string) => {
-  if (result === "W") return "text-green-500";
-  if (result === "L") return "text-red-500";
-  return "text-yellow-500";
+const getWinner = (match: Match) => {
+  if (match.homeScore > match.awayScore) return match.homeTeam;
+  if (match.awayScore > match.homeScore) return match.awayTeam;
+  return null;
 };
 
 const getRatingColor = (rating: number) => {
@@ -43,41 +44,52 @@ export const MatchRatings = () => {
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
-        {recentMatches.map((match) => (
-          <Card
-            key={match.id}
-            className="p-5 bg-gradient-to-br from-card to-card/50 border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-gold group"
-          >
-            <div className="space-y-3">
-              {/* Match Header */}
-              <div className="flex items-start justify-between">
+        {recentMatches.map((match) => {
+          const winner = getWinner(match);
+          return (
+            <Card
+              key={match.id}
+              className="p-5 bg-gradient-to-br from-card to-card/50 border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-gold group"
+            >
+              <div className="space-y-3">
+                {/* Match Header */}
                 <div>
-                  <p className="font-semibold text-foreground group-hover:text-primary transition-colors">
-                    vs {match.opponent}
+                  <p className="font-semibold text-foreground group-hover:text-primary transition-colors text-center">
+                    <span className={winner === match.homeTeam ? "text-primary" : ""}>
+                      {match.homeTeam}
+                    </span>
+                    {" "}
+                    <span className={winner === match.homeTeam ? "text-primary" : "text-muted-foreground"}>
+                      {match.homeScore}
+                    </span>
+                    {" - "}
+                    <span className={winner === match.awayTeam ? "text-primary" : "text-muted-foreground"}>
+                      {match.awayScore}
+                    </span>
+                    {" "}
+                    <span className={winner === match.awayTeam ? "text-primary" : ""}>
+                      {match.awayTeam}
+                    </span>
                   </p>
-                  <p className="text-xs text-muted-foreground">{match.competition}</p>
                 </div>
-                <span className={`text-lg font-bold ${getResultColor(match.result)}`}>
-                  {match.result}
-                </span>
-              </div>
 
-              {/* Rating Display */}
-              <div className="flex items-center justify-between pt-2 border-t border-border/50">
-                <div className="flex items-center gap-2">
-                  {getTrendIcon(match.rating)}
-                  <span className="text-xs text-muted-foreground">Rating</span>
+                {/* Rating Display */}
+                <div className="flex items-center justify-between pt-2 border-t border-border/50">
+                  <div className="flex items-center gap-2">
+                    {getTrendIcon(match.rating)}
+                    <span className="text-xs text-muted-foreground">Rating</span>
+                  </div>
+                  <span className={`text-3xl font-bold ${getRatingColor(match.rating)}`}>
+                    {match.rating}
+                  </span>
                 </div>
-                <span className={`text-3xl font-bold ${getRatingColor(match.rating)}`}>
-                  {match.rating}
-                </span>
-              </div>
 
-              {/* Date */}
-              <p className="text-xs text-muted-foreground text-right">{match.date}</p>
-            </div>
-          </Card>
-        ))}
+                {/* Date */}
+                <p className="text-xs text-muted-foreground text-right">{match.date}</p>
+              </div>
+            </Card>
+          );
+        })}
       </div>
     </section>
   );
