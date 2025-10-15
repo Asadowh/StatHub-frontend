@@ -6,6 +6,7 @@ import { Trophy, Medal, MapPin, Ruler, Calendar, Target } from "lucide-react";
 import profileAvatar from "@/assets/profile-avatar.jpg";
 import trophyIcon from "@/assets/trophy-icon.png";
 import badgeIcon from "@/assets/badge-icon.png";
+import { CountryBadge } from "@/components/CountryBadge";
 
 const Profile = () => {
   const topAchievements = [
@@ -47,7 +48,7 @@ const Profile = () => {
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 <div className="flex items-center gap-2 text-sm">
                   <MapPin className="w-4 h-4 text-primary" />
-                  <span className="text-muted-foreground">Azerbaijan 🇦🇿</span>
+                  <CountryBadge code="AZ" flag="🇦🇿" />
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <Calendar className="w-4 h-4 text-primary" />

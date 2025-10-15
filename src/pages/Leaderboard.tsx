@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Trophy, TrendingUp, TrendingDown } from "lucide-react";
+import { CountryBadge } from "@/components/CountryBadge";
 
 interface Player {
   rank: number;
@@ -11,22 +12,23 @@ interface Player {
   position: string;
   points: number;
   nationality: string;
+  countryCode: string;
   avatar?: string;
   trend: "up" | "down" | "same";
   isCurrentUser?: boolean;
 }
 
 const players: Player[] = [
-  { rank: 1, name: "Carlos Silva", position: "Forward", points: 2850, nationality: "🇧🇷", trend: "same" },
-  { rank: 2, name: "Mohammed Hassan", position: "Midfielder", points: 2720, nationality: "🇪🇬", trend: "up" },
-  { rank: 3, name: "James Wilson", position: "Forward", points: 2680, nationality: "🇬🇧", trend: "down" },
-  { rank: 4, name: "Sami Ali", position: "Forward", points: 2590, nationality: "🇦🇿", trend: "up", isCurrentUser: true },
-  { rank: 5, name: "Andre Mbemba", position: "Defender", points: 2510, nationality: "🇨🇲", trend: "up" },
-  { rank: 6, name: "Takeshi Yamamoto", position: "Goalkeeper", points: 2450, nationality: "🇯🇵", trend: "same" },
-  { rank: 7, name: "Luis Hernandez", position: "Midfielder", points: 2380, nationality: "🇲🇽", trend: "down" },
-  { rank: 8, name: "Viktor Petrov", position: "Defender", points: 2310, nationality: "🇷🇺", trend: "up" },
-  { rank: 9, name: "Ahmed Al-Rashid", position: "Forward", points: 2240, nationality: "🇸🇦", trend: "same" },
-  { rank: 10, name: "Marco Rossi", position: "Midfielder", points: 2180, nationality: "🇮🇹", trend: "down" },
+  { rank: 1, name: "Carlos Silva", position: "Forward", points: 2850, nationality: "🇧🇷", countryCode: "BR", trend: "same" },
+  { rank: 2, name: "Mohammed Hassan", position: "Midfielder", points: 2720, nationality: "🇪🇬", countryCode: "EG", trend: "up" },
+  { rank: 3, name: "James Wilson", position: "Forward", points: 2680, nationality: "🇬🇧", countryCode: "GB", trend: "down" },
+  { rank: 4, name: "Sami Ali", position: "Forward", points: 2590, nationality: "🇦🇿", countryCode: "AZ", trend: "up", isCurrentUser: true },
+  { rank: 5, name: "Andre Mbemba", position: "Defender", points: 2510, nationality: "🇨🇲", countryCode: "CM", trend: "up" },
+  { rank: 6, name: "Takeshi Yamamoto", position: "Goalkeeper", points: 2450, nationality: "🇯🇵", countryCode: "JP", trend: "same" },
+  { rank: 7, name: "Luis Hernandez", position: "Midfielder", points: 2380, nationality: "🇲🇽", countryCode: "MX", trend: "down" },
+  { rank: 8, name: "Viktor Petrov", position: "Defender", points: 2310, nationality: "🇷🇺", countryCode: "RU", trend: "up" },
+  { rank: 9, name: "Ahmed Al-Rashid", position: "Forward", points: 2240, nationality: "🇸🇦", countryCode: "SA", trend: "same" },
+  { rank: 10, name: "Marco Rossi", position: "Midfielder", points: 2180, nationality: "🇮🇹", countryCode: "IT", trend: "down" },
 ];
 
 const Leaderboard = () => {
@@ -83,7 +85,10 @@ const Leaderboard = () => {
               <AvatarFallback className="bg-gray-400/20">2</AvatarFallback>
             </Avatar>
             <p className="font-bold text-lg">{players[1].name}</p>
-            <p className="text-xs text-muted-foreground mb-2">{players[1].nationality} {players[1].position}</p>
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <CountryBadge code={players[1].countryCode} flag={players[1].nationality} className="text-xs" />
+              <p className="text-xs text-muted-foreground">{players[1].position}</p>
+            </div>
             <Badge className="bg-primary/20 text-primary">{players[1].points} pts</Badge>
           </Card>
 
@@ -94,7 +99,10 @@ const Leaderboard = () => {
               <AvatarFallback className="bg-yellow-500/20">1</AvatarFallback>
             </Avatar>
             <p className="font-bold text-xl">{players[0].name}</p>
-            <p className="text-sm text-muted-foreground mb-2">{players[0].nationality} {players[0].position}</p>
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <CountryBadge code={players[0].countryCode} flag={players[0].nationality} />
+              <p className="text-sm text-muted-foreground">{players[0].position}</p>
+            </div>
             <Badge className="bg-primary/20 text-primary text-lg">{players[0].points} pts</Badge>
           </Card>
 
@@ -105,7 +113,10 @@ const Leaderboard = () => {
               <AvatarFallback className="bg-orange-600/20">3</AvatarFallback>
             </Avatar>
             <p className="font-bold text-lg">{players[2].name}</p>
-            <p className="text-xs text-muted-foreground mb-2">{players[2].nationality} {players[2].position}</p>
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <CountryBadge code={players[2].countryCode} flag={players[2].nationality} className="text-xs" />
+              <p className="text-xs text-muted-foreground">{players[2].position}</p>
+            </div>
             <Badge className="bg-primary/20 text-primary">{players[2].points} pts</Badge>
           </Card>
         </div>
@@ -152,7 +163,7 @@ const Leaderboard = () => {
                           <p className={`font-semibold ${player.isCurrentUser ? "text-primary" : ""}`}>
                             {player.name} {player.isCurrentUser && "(You)"}
                           </p>
-                          <p className="text-xs text-muted-foreground">{player.nationality}</p>
+                          <CountryBadge code={player.countryCode} flag={player.nationality} className="text-xs mt-1" />
                         </div>
                       </div>
                     </td>
