@@ -1,7 +1,9 @@
 import { ProfileCard } from "@/components/ProfileCard";
 import { StatsGrid } from "@/components/StatsGrid";
-import { NavigationCards } from "@/components/NavigationCards";
+import { MatchRatings } from "@/components/MatchRatings";
+import { QuickActions } from "@/components/QuickActions";
 import { NewsFeed } from "@/components/NewsFeed";
+import { Sparkles } from "lucide-react";
 
 const Index = () => {
   return (
@@ -9,14 +11,26 @@ const Index = () => {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-7xl mx-auto space-y-8">
+          {/* Welcome Message */}
+          <div className="flex items-center gap-3 animate-fade-in">
+            <Sparkles className="w-6 h-6 text-primary" />
+            <div>
+              <h2 className="text-2xl font-bold">Welcome back, Sami!</h2>
+              <p className="text-sm text-muted-foreground">Ready to dominate the field today?</p>
+            </div>
+          </div>
+
           {/* Profile Section */}
           <ProfileCard />
 
           {/* Stats Grid */}
           <StatsGrid />
 
-          {/* Navigation Cards */}
-          <NavigationCards />
+          {/* Last 3 Match Ratings */}
+          <MatchRatings />
+
+          {/* Quick Actions */}
+          <QuickActions />
 
           {/* News Feed */}
           <NewsFeed />

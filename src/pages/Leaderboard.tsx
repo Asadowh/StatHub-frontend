@@ -1,8 +1,177 @@
+import { useState } from "react";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Trophy, TrendingUp, TrendingDown } from "lucide-react";
+
+interface Player {
+  rank: number;
+  name: string;
+  position: string;
+  points: number;
+  nationality: string;
+  avatar?: string;
+  trend: "up" | "down" | "same";
+  isCurrentUser?: boolean;
+}
+
+const players: Player[] = [
+  { rank: 1, name: "Carlos Silva", position: "Forward", points: 2850, nationality: "🇧🇷", trend: "same" },
+  { rank: 2, name: "Mohammed Hassan", position: "Midfielder", points: 2720, nationality: "🇪🇬", trend: "up" },
+  { rank: 3, name: "James Wilson", position: "Forward", points: 2680, nationality: "🇬🇧", trend: "down" },
+  { rank: 4, name: "Sami Ali", position: "Forward", points: 2590, nationality: "🇦🇿", trend: "up", isCurrentUser: true },
+  { rank: 5, name: "Andre Mbemba", position: "Defender", points: 2510, nationality: "🇨🇲", trend: "up" },
+  { rank: 6, name: "Takeshi Yamamoto", position: "Goalkeeper", points: 2450, nationality: "🇯🇵", trend: "same" },
+  { rank: 7, name: "Luis Hernandez", position: "Midfielder", points: 2380, nationality: "🇲🇽", trend: "down" },
+  { rank: 8, name: "Viktor Petrov", position: "Defender", points: 2310, nationality: "🇷🇺", trend: "up" },
+  { rank: 9, name: "Ahmed Al-Rashid", position: "Forward", points: 2240, nationality: "🇸🇦", trend: "same" },
+  { rank: 10, name: "Marco Rossi", position: "Midfielder", points: 2180, nationality: "🇮🇹", trend: "down" },
+];
+
 const Leaderboard = () => {
+  const [filter, setFilter] = useState<string>("Global");
+  
+  const filters = ["Global", "Goalkeepers", "Defenders", "Midfielders", "Attackers"];
+
+  const getRankColor = (rank: number) => {
+    if (rank === 1) return "text-yellow-500";
+    if (rank === 2) return "text-gray-400";
+    if (rank === 3) return "text-orange-600";
+    return "text-muted-foreground";
+  };
+
+  const getRankBg = (rank: number) => {
+    if (rank === 1) return "bg-yellow-500/20 border-yellow-500/30";
+    if (rank === 2) return "bg-gray-400/20 border-gray-400/30";
+    if (rank === 3) return "bg-orange-600/20 border-orange-600/30";
+    return "";
+  };
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-primary mb-6">Leaderboard</h1>
-      <p className="text-muted-foreground">Leaderboard page coming soon...</p>
+    <div className="container mx-auto px-4 py-8 max-w-6xl">
+      <div className="space-y-8">
+        {/* Header */}
+        <div className="text-center space-y-2">
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <Trophy className="w-10 h-10 text-primary" />
+            <h1 className="text-4xl font-bold">Leaderboard</h1>
+          </div>
+          <p className="text-muted-foreground">Compete with the best players worldwide</p>
+        </div>
+
+        {/* Filters */}
+        <div className="flex gap-2 flex-wrap justify-center">
+          {filters.map((filterOption) => (
+            <Button
+              key={filterOption}
+              variant={filter === filterOption ? "default" : "outline"}
+              onClick={() => setFilter(filterOption)}
+              className={filter === filterOption ? "bg-primary text-primary-foreground" : ""}
+            >
+              {filterOption}
+            </Button>
+          ))}
+        </div>
+
+        {/* Top 3 Podium */}
+        <div className="grid grid-cols-3 gap-4 max-w-4xl mx-auto">
+          {/* 2nd Place */}
+          <Card className="p-6 bg-gradient-to-br from-gray-400/10 to-card border-gray-400/30 text-center mt-8">
+            <Trophy className="w-8 h-8 text-gray-400 mx-auto mb-3" />
+            <Avatar className="w-16 h-16 mx-auto mb-3 border-2 border-gray-400/50">
+              <AvatarFallback className="bg-gray-400/20">2</AvatarFallback>
+            </Avatar>
+            <p className="font-bold text-lg">{players[1].name}</p>
+            <p className="text-xs text-muted-foreground mb-2">{players[1].nationality} {players[1].position}</p>
+            <Badge className="bg-primary/20 text-primary">{players[1].points} pts</Badge>
+          </Card>
+
+          {/* 1st Place */}
+          <Card className="p-6 bg-gradient-to-br from-yellow-500/20 to-card border-yellow-500/50 text-center shadow-gold">
+            <Trophy className="w-12 h-12 text-yellow-500 mx-auto mb-3" />
+            <Avatar className="w-20 h-20 mx-auto mb-3 border-4 border-yellow-500/50">
+              <AvatarFallback className="bg-yellow-500/20">1</AvatarFallback>
+            </Avatar>
+            <p className="font-bold text-xl">{players[0].name}</p>
+            <p className="text-sm text-muted-foreground mb-2">{players[0].nationality} {players[0].position}</p>
+            <Badge className="bg-primary/20 text-primary text-lg">{players[0].points} pts</Badge>
+          </Card>
+
+          {/* 3rd Place */}
+          <Card className="p-6 bg-gradient-to-br from-orange-600/10 to-card border-orange-600/30 text-center mt-8">
+            <Trophy className="w-8 h-8 text-orange-600 mx-auto mb-3" />
+            <Avatar className="w-16 h-16 mx-auto mb-3 border-2 border-orange-600/50">
+              <AvatarFallback className="bg-orange-600/20">3</AvatarFallback>
+            </Avatar>
+            <p className="font-bold text-lg">{players[2].name}</p>
+            <p className="text-xs text-muted-foreground mb-2">{players[2].nationality} {players[2].position}</p>
+            <Badge className="bg-primary/20 text-primary">{players[2].points} pts</Badge>
+          </Card>
+        </div>
+
+        {/* Full Rankings Table */}
+        <Card className="overflow-hidden bg-gradient-to-br from-card to-card/50 border-border/50">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-muted/30 border-b border-border/50">
+                <tr>
+                  <th className="px-6 py-4 text-left text-sm font-semibold">Rank</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold">Player</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold">Position</th>
+                  <th className="px-6 py-4 text-right text-sm font-semibold">Points</th>
+                  <th className="px-6 py-4 text-center text-sm font-semibold">Trend</th>
+                </tr>
+              </thead>
+              <tbody>
+                {players.map((player) => (
+                  <tr
+                    key={player.rank}
+                    className={`border-b border-border/30 transition-colors ${
+                      player.isCurrentUser
+                        ? "bg-primary/10 hover:bg-primary/15"
+                        : "hover:bg-muted/20"
+                    }`}
+                  >
+                    <td className="px-6 py-4">
+                      <Badge
+                        variant="outline"
+                        className={`font-bold text-lg ${getRankBg(player.rank)} ${getRankColor(player.rank)}`}
+                      >
+                        #{player.rank}
+                      </Badge>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <Avatar className="w-10 h-10 border-2 border-border">
+                          <AvatarFallback className="bg-muted text-xs">
+                            {player.name.split(" ").map(n => n[0]).join("")}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className={`font-semibold ${player.isCurrentUser ? "text-primary" : ""}`}>
+                            {player.name} {player.isCurrentUser && "(You)"}
+                          </p>
+                          <p className="text-xs text-muted-foreground">{player.nationality}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-muted-foreground">{player.position}</td>
+                    <td className="px-6 py-4 text-right">
+                      <span className="font-bold text-lg text-primary">{player.points}</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      {player.trend === "up" && <TrendingUp className="w-5 h-5 text-green-500 mx-auto" />}
+                      {player.trend === "down" && <TrendingDown className="w-5 h-5 text-red-500 mx-auto" />}
+                      {player.trend === "same" && <span className="text-muted-foreground">—</span>}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Card>
+      </div>
     </div>
   );
 };
