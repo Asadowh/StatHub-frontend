@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import profileAvatar from "@/assets/profile-avatar.jpg";
+import portugalFlag from "@/assets/portugal-flag.png";
 import { EditProfileModal } from "./EditProfileModal";
 import { useState } from "react";
 import { findCountryByName, getGradientFromColors } from "@/lib/countryData";
@@ -107,8 +108,11 @@ export const ProfileCard = ({
                 <span className="text-sm text-muted-foreground">Jersey</span>
               </div>
               <div className="flex flex-col">
-                <span className="text-xs text-muted-foreground">Position</span>
-                <span className="text-sm font-semibold text-foreground">{profileData.favoritePosition}</span>
+                <span className="text-xs text-muted-foreground">Nationality</span>
+                <div className="flex items-center gap-2">
+                  <img src={portugalFlag} alt="Portugal" className="w-6 h-6 rounded-full object-cover border border-border/50" />
+                  <span className="text-sm font-semibold text-foreground">🇵🇹</span>
+                </div>
               </div>
               <div className="flex flex-col">
                 <span className="text-xs text-muted-foreground">Birthday</span>
@@ -117,10 +121,6 @@ export const ProfileCard = ({
               <div className="flex flex-col">
                 <span className="text-xs text-muted-foreground">Height</span>
                 <span className="text-sm font-semibold text-foreground">{profileData.height}</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xs text-muted-foreground">Nationality</span>
-                <span className="text-sm font-semibold text-foreground">🇵🇹 Portugal</span>
               </div>
             </div>
 
