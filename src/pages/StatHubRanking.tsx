@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Crown } from "lucide-react";
 import portugalFlag from "@/assets/portugal-flag.png";
 
@@ -119,7 +120,6 @@ const StatHubRanking = () => {
                   <th className="text-left p-4 text-muted-foreground font-semibold">Rank</th>
                   <th className="text-left p-4 text-muted-foreground font-semibold">Player</th>
                   <th className="text-left p-4 text-muted-foreground font-semibold">Position</th>
-                  <th className="text-left p-4 text-muted-foreground font-semibold">Nation</th>
                   <th className="text-right p-4 text-muted-foreground font-semibold">{getStatLabel()}</th>
                 </tr>
               </thead>
@@ -138,15 +138,22 @@ const StatHubRanking = () => {
                       </div>
                     </td>
                     <td className="p-4">
-                      <span className="font-semibold">{player.name}</span>
+                      <div className="flex items-center gap-3">
+                        <Avatar className="w-10 h-10 border-2 border-border">
+                          <AvatarFallback className="bg-muted text-xs">
+                            {player.name.split(" ").map(n => n[0]).join("")}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <span className="font-semibold">{player.name}</span>
+                          <p className="text-xs text-muted-foreground">{player.nationality}</p>
+                        </div>
+                      </div>
                     </td>
                     <td className="p-4">
                       <Badge variant="outline" className="border-primary/30 text-muted-foreground">
                         {player.position}
                       </Badge>
-                    </td>
-                    <td className="p-4">
-                      <span className="text-2xl">{player.nationality}</span>
                     </td>
                     <td className="p-4 text-right">
                       <span className={`text-lg font-bold ${player.rank === 1 ? 'text-primary' : 'text-foreground'}`}>

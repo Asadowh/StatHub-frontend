@@ -154,7 +154,6 @@ const Trophies = () => {
                   <th className="px-6 py-4 text-left text-sm font-semibold">Rank</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold">Player</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold">Position</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">Nation</th>
                   <th className="px-6 py-4 text-right text-sm font-semibold">Trophies</th>
                 </tr>
               </thead>
@@ -192,13 +191,11 @@ const Trophies = () => {
                           <p className={`font-semibold ${player.isCurrentUser ? "text-primary" : ""}`}>
                             {player.name} {player.isCurrentUser && "(You)"}
                           </p>
+                          <p className="text-xs text-muted-foreground">{player.nationality}</p>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-muted-foreground">{player.position}</td>
-                    <td className="px-6 py-4">
-                      <CountryBadge code={player.countryCode} flag={player.nationality} />
-                    </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <Trophy className="w-4 h-4 text-yellow-500" />
