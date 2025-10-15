@@ -12,12 +12,13 @@ const actions = [
     iconColor: "text-yellow-500"
   },
   { 
-    title: "Leaderboard", 
-    description: "See your rank", 
-    icon: Users, 
-    path: "/leaderboard",
-    gradient: "from-blue-500/10 to-purple-500/10",
-    iconColor: "text-blue-500"
+    title: "Trophies", 
+    description: "View your earned awards", 
+    icon: Trophy, 
+    path: "/trophies",
+    gradient: "from-yellow-400/15 to-amber-400/15",
+    iconColor: "text-yellow-400",
+    glow: true
   },
   { 
     title: "Matches", 
@@ -41,7 +42,7 @@ export const QuickActions = () => {
           <Card
             key={action.path}
             onClick={() => navigate(action.path)}
-            className={`p-6 bg-gradient-to-br ${action.gradient} border-border/50 hover:border-primary/50 cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-gold group`}
+            className={`p-6 bg-gradient-to-br ${action.gradient} border-border/50 hover:border-primary/50 cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-gold group ${action.glow ? 'shadow-[0_0_15px_rgba(250,204,21,0.15)]' : ''}`}
           >
             <div className="flex items-center gap-4">
               <div className={`p-3 rounded-xl bg-background/50 ${action.iconColor} group-hover:scale-110 transition-transform`}>

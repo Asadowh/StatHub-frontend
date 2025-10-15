@@ -4,9 +4,8 @@ import { UserMenu } from "./UserMenu";
 
 const navItems = [
   { title: "Home", path: "/", icon: Home },
-  { title: "Achievements", path: "/achievements", icon: Medal },
-  { title: "Leaderboard", path: "/leaderboard", icon: Users },
   { title: "Matches", path: "/matches", icon: Trophy },
+  { title: "Leaderboard", path: "/leaderboard", icon: Users },
   { title: "Profile", path: "/profile", icon: User },
   { title: "News", path: "/news", icon: Newspaper },
 ];
