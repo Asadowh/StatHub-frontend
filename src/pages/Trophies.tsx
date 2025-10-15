@@ -10,7 +10,7 @@ interface TrophyPlayer {
   rank: number;
   name: string;
   position: string;
-  avgRating: number;
+  trophyCount: number;
   nationality: string;
   countryCode: string;
   avatar?: string;
@@ -18,35 +18,35 @@ interface TrophyPlayer {
 }
 
 const globalMVPPlayers: TrophyPlayer[] = [
-  { rank: 1, name: "Carlos Silva", position: "Forward", avgRating: 9.2, nationality: "🇧🇷", countryCode: "BR" },
-  { rank: 2, name: "Mohammed Hassan", position: "Midfielder", avgRating: 8.9, nationality: "🇪🇬", countryCode: "EG" },
-  { rank: 3, name: "James Wilson", position: "Forward", avgRating: 8.7, nationality: "🇬🇧", countryCode: "GB" },
-  { rank: 4, name: "Sami Ali", position: "Forward", avgRating: 8.5, nationality: "🇦🇿", countryCode: "AZ", isCurrentUser: true },
-  { rank: 5, name: "Andre Mbemba", position: "Defender", avgRating: 8.4, nationality: "🇨🇲", countryCode: "CM" },
+  { rank: 1, name: "Carlos Silva", position: "Forward", trophyCount: 15, nationality: "🇧🇷", countryCode: "BR" },
+  { rank: 2, name: "Mohammed Hassan", position: "Midfielder", trophyCount: 12, nationality: "🇪🇬", countryCode: "EG" },
+  { rank: 3, name: "James Wilson", position: "Forward", trophyCount: 10, nationality: "🇬🇧", countryCode: "GB" },
+  { rank: 4, name: "Sami Ali", position: "Forward", trophyCount: 8, nationality: "🇦🇿", countryCode: "AZ", isCurrentUser: true },
+  { rank: 5, name: "Andre Mbemba", position: "Defender", trophyCount: 7, nationality: "🇨🇲", countryCode: "CM" },
 ];
 
 const goalkeeperPlayers: TrophyPlayer[] = [
-  { rank: 1, name: "Takeshi Yamamoto", position: "Goalkeeper", avgRating: 8.8, nationality: "🇯🇵", countryCode: "JP" },
-  { rank: 2, name: "Peter Schmidt", position: "Goalkeeper", avgRating: 8.5, nationality: "🇩🇪", countryCode: "DE" },
-  { rank: 3, name: "Jorge Campos", position: "Goalkeeper", avgRating: 8.2, nationality: "🇲🇽", countryCode: "MX" },
+  { rank: 1, name: "Takeshi Yamamoto", position: "Goalkeeper", trophyCount: 9, nationality: "🇯🇵", countryCode: "JP" },
+  { rank: 2, name: "Peter Schmidt", position: "Goalkeeper", trophyCount: 7, nationality: "🇩🇪", countryCode: "DE" },
+  { rank: 3, name: "Jorge Campos", position: "Goalkeeper", trophyCount: 5, nationality: "🇲🇽", countryCode: "MX" },
 ];
 
 const defenderPlayers: TrophyPlayer[] = [
-  { rank: 1, name: "Andre Mbemba", position: "Defender", avgRating: 8.9, nationality: "🇨🇲", countryCode: "CM" },
-  { rank: 2, name: "Viktor Petrov", position: "Defender", avgRating: 8.6, nationality: "🇷🇺", countryCode: "RU" },
-  { rank: 3, name: "Ricardo Santos", position: "Defender", avgRating: 8.3, nationality: "🇵🇹", countryCode: "PT" },
+  { rank: 1, name: "Andre Mbemba", position: "Defender", trophyCount: 11, nationality: "🇨🇲", countryCode: "CM" },
+  { rank: 2, name: "Viktor Petrov", position: "Defender", trophyCount: 9, nationality: "🇷🇺", countryCode: "RU" },
+  { rank: 3, name: "Ricardo Santos", position: "Defender", trophyCount: 6, nationality: "🇵🇹", countryCode: "PT" },
 ];
 
 const midfielderPlayers: TrophyPlayer[] = [
-  { rank: 1, name: "Mohammed Hassan", position: "Midfielder", avgRating: 9.1, nationality: "🇪🇬", countryCode: "EG" },
-  { rank: 2, name: "Luis Hernandez", position: "Midfielder", avgRating: 8.7, nationality: "🇲🇽", countryCode: "MX" },
-  { rank: 3, name: "Marco Rossi", position: "Midfielder", avgRating: 8.4, nationality: "🇮🇹", countryCode: "IT" },
+  { rank: 1, name: "Mohammed Hassan", position: "Midfielder", trophyCount: 13, nationality: "🇪🇬", countryCode: "EG" },
+  { rank: 2, name: "Luis Hernandez", position: "Midfielder", trophyCount: 10, nationality: "🇲🇽", countryCode: "MX" },
+  { rank: 3, name: "Marco Rossi", position: "Midfielder", trophyCount: 8, nationality: "🇮🇹", countryCode: "IT" },
 ];
 
 const attackerPlayers: TrophyPlayer[] = [
-  { rank: 1, name: "Carlos Silva", position: "Forward", avgRating: 9.3, nationality: "🇧🇷", countryCode: "BR" },
-  { rank: 2, name: "James Wilson", position: "Forward", avgRating: 8.9, nationality: "🇬🇧", countryCode: "GB" },
-  { rank: 3, name: "Sami Ali", position: "Forward", avgRating: 8.6, nationality: "🇦🇿", countryCode: "AZ", isCurrentUser: true },
+  { rank: 1, name: "Carlos Silva", position: "Forward", trophyCount: 14, nationality: "🇧🇷", countryCode: "BR" },
+  { rank: 2, name: "James Wilson", position: "Forward", trophyCount: 11, nationality: "🇬🇧", countryCode: "GB" },
+  { rank: 3, name: "Sami Ali", position: "Forward", trophyCount: 9, nationality: "🇦🇿", countryCode: "AZ", isCurrentUser: true },
 ];
 
 const Trophies = () => {
@@ -118,7 +118,7 @@ const Trophies = () => {
               </Avatar>
               <p className="font-bold text-lg">{players[1].name}</p>
               <p className="text-xs text-muted-foreground mb-2">{players[1].nationality} {players[1].position}</p>
-              <Badge className="bg-primary/20 text-primary">{players[1].avgRating.toFixed(1)} avg</Badge>
+              <Badge className="bg-yellow-500/20 text-yellow-500 border-yellow-500/30"><Trophy className="w-3 h-3 mr-1 inline" />{players[1].trophyCount}</Badge>
             </Card>
 
             {/* 1st Place */}
@@ -129,7 +129,7 @@ const Trophies = () => {
               </Avatar>
               <p className="font-bold text-xl">{players[0].name}</p>
               <p className="text-sm text-muted-foreground mb-2">{players[0].nationality} {players[0].position}</p>
-              <Badge className="bg-primary/20 text-primary text-lg">{players[0].avgRating.toFixed(1)} avg</Badge>
+              <Badge className="bg-yellow-500/20 text-yellow-500 border-yellow-500/30 text-lg"><Trophy className="w-4 h-4 mr-1 inline" />{players[0].trophyCount}</Badge>
             </Card>
 
             {/* 3rd Place */}
@@ -140,7 +140,7 @@ const Trophies = () => {
               </Avatar>
               <p className="font-bold text-lg">{players[2].name}</p>
               <p className="text-xs text-muted-foreground mb-2">{players[2].nationality} {players[2].position}</p>
-              <Badge className="bg-primary/20 text-primary">{players[2].avgRating.toFixed(1)} avg</Badge>
+              <Badge className="bg-orange-600/20 text-orange-600 border-orange-600/30"><Trophy className="w-3 h-3 mr-1 inline" />{players[2].trophyCount}</Badge>
             </Card>
           </div>
         )}
@@ -155,7 +155,7 @@ const Trophies = () => {
                   <th className="px-6 py-4 text-left text-sm font-semibold">Player</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold">Position</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold">Nation</th>
-                  <th className="px-6 py-4 text-right text-sm font-semibold">Avg Rating</th>
+                  <th className="px-6 py-4 text-right text-sm font-semibold">Trophies</th>
                 </tr>
               </thead>
               <tbody>
@@ -200,7 +200,10 @@ const Trophies = () => {
                       <CountryBadge code={player.countryCode} flag={player.nationality} />
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <span className="font-bold text-lg text-primary">{player.avgRating.toFixed(1)}</span>
+                      <div className="flex items-center justify-end gap-2">
+                        <Trophy className="w-4 h-4 text-yellow-500" />
+                        <span className="font-bold text-lg text-yellow-500">{player.trophyCount}</span>
+                      </div>
                     </td>
                   </tr>
                 ))}
