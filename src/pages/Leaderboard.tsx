@@ -86,7 +86,7 @@ const Leaderboard = () => {
             </Avatar>
             <p className="font-bold text-lg">{players[1].name}</p>
             <div className="flex items-center justify-center gap-2 mb-2">
-              <CountryBadge code={players[1].countryCode} flag={players[1].nationality} className="text-xs" />
+              <CountryBadge code={players[1].countryCode} className="w-8 h-8 text-xs" />
               <p className="text-xs text-muted-foreground">{players[1].position}</p>
             </div>
             <Badge className="bg-primary/20 text-primary">{players[1].points} pts</Badge>
@@ -100,7 +100,7 @@ const Leaderboard = () => {
             </Avatar>
             <p className="font-bold text-xl">{players[0].name}</p>
             <div className="flex items-center justify-center gap-2 mb-2">
-              <CountryBadge code={players[0].countryCode} flag={players[0].nationality} />
+              <CountryBadge code={players[0].countryCode} className="w-10 h-10" />
               <p className="text-sm text-muted-foreground">{players[0].position}</p>
             </div>
             <Badge className="bg-primary/20 text-primary text-lg">{players[0].points} pts</Badge>
@@ -114,7 +114,7 @@ const Leaderboard = () => {
             </Avatar>
             <p className="font-bold text-lg">{players[2].name}</p>
             <div className="flex items-center justify-center gap-2 mb-2">
-              <CountryBadge code={players[2].countryCode} flag={players[2].nationality} className="text-xs" />
+              <CountryBadge code={players[2].countryCode} className="w-8 h-8 text-xs" />
               <p className="text-xs text-muted-foreground">{players[2].position}</p>
             </div>
             <Badge className="bg-primary/20 text-primary">{players[2].points} pts</Badge>
@@ -159,11 +159,13 @@ const Leaderboard = () => {
                             {player.name.split(" ").map(n => n[0]).join("")}
                           </AvatarFallback>
                         </Avatar>
-                        <div>
-                          <p className={`font-semibold ${player.isCurrentUser ? "text-primary" : ""}`}>
-                            {player.name} {player.isCurrentUser && "(You)"}
-                          </p>
-                          <CountryBadge code={player.countryCode} flag={player.nationality} className="text-xs mt-1" />
+                        <div className="flex items-center gap-2">
+                          <CountryBadge code={player.countryCode} className="w-8 h-8 text-xs" />
+                          <div>
+                            <p className={`font-semibold ${player.isCurrentUser ? "text-primary" : ""}`}>
+                              {player.name} {player.isCurrentUser && "(You)"}
+                            </p>
+                          </div>
                         </div>
                       </div>
                     </td>
