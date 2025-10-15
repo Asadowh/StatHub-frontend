@@ -9,12 +9,14 @@ interface Match {
   awayScore: number;
   date: string;
   rating: number;
+  playerPlayed: boolean;
+  playerResult: "W" | "L" | "D";
 }
 
 const recentMatches: Match[] = [
-  { id: 1, homeTeam: "Blue Tigers", awayTeam: "Red Dragons", homeScore: 3, awayScore: 1, date: "May 12", rating: 8.5 },
-  { id: 2, homeTeam: "Green Eagles", awayTeam: "Yellow Wolves", homeScore: 2, awayScore: 2, date: "May 9", rating: 7.2 },
-  { id: 3, homeTeam: "Black Panthers", awayTeam: "White Sharks", homeScore: 4, awayScore: 0, date: "May 5", rating: 9.1 },
+  { id: 1, homeTeam: "Blue Tigers", awayTeam: "Red Dragons", homeScore: 3, awayScore: 1, date: "May 12", rating: 8.5, playerPlayed: true, playerResult: "W" },
+  { id: 2, homeTeam: "Green Eagles", awayTeam: "Yellow Wolves", homeScore: 2, awayScore: 2, date: "May 9", rating: 7.2, playerPlayed: true, playerResult: "D" },
+  { id: 3, homeTeam: "Black Panthers", awayTeam: "White Sharks", homeScore: 4, awayScore: 0, date: "May 5", rating: 9.1, playerPlayed: true, playerResult: "W" },
 ];
 
 const getTrendIcon = (rating: number) => {
@@ -27,6 +29,12 @@ const getWinner = (match: Match) => {
   if (match.homeScore > match.awayScore) return match.homeTeam;
   if (match.awayScore > match.homeScore) return match.awayTeam;
   return null;
+};
+
+const getResultColor = (result: "W" | "L" | "D") => {
+  if (result === "W") return "text-green-500";
+  if (result === "L") return "text-red-500";
+  return "text-yellow-500";
 };
 
 const getRatingColor = (rating: number) => {
@@ -44,7 +52,7 @@ export const MatchRatings = () => {
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
-        {recentMatches.map((match) => {
+        {recentMatches.filter(match => match.playerPlayed).map((match) => {
           const winner = getWinner(match);
           return (
             <Card
@@ -53,8 +61,8 @@ export const MatchRatings = () => {
             >
               <div className="space-y-3">
                 {/* Match Header */}
-                <div>
-                  <p className="font-semibold text-foreground group-hover:text-primary transition-colors text-center">
+                <div className="flex items-start justify-between">
+                  <p className="font-semibold text-foreground group-hover:text-primary transition-colors">
                     <span className={winner === match.homeTeam ? "text-primary" : ""}>
                       {match.homeTeam}
                     </span>
@@ -71,6 +79,9 @@ export const MatchRatings = () => {
                       {match.awayTeam}
                     </span>
                   </p>
+                  <span className={`text-lg font-bold ${getResultColor(match.playerResult)}`}>
+                    {match.playerResult}
+                  </span>
                 </div>
 
                 {/* Rating Display */}
