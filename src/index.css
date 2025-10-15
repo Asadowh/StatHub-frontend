@@ -8,46 +8,49 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 210 29% 6%;
-    --foreground: 0 0% 93%;
+    /* StatHub Theme - Dark Navy (#0B0E14) with Gold (#FFD700) */
+    --background: 220 24% 6%;  /* #0B0E14 dark navy */
+    --foreground: 0 0% 95%;
 
-    --card: 210 29% 10%;
-    --card-foreground: 0 0% 93%;
+    --card: 220 20% 10%;  /* slightly lighter navy for cards */
+    --card-foreground: 0 0% 95%;
 
-    --popover: 210 29% 10%;
-    --popover-foreground: 0 0% 93%;
+    --popover: 220 20% 12%;
+    --popover-foreground: 0 0% 95%;
 
-    --primary: 152 100% 50%;
-    --primary-foreground: 210 29% 6%;
+    --primary: 51 100% 60%;  /* #FFD700 gold */
+    --primary-foreground: 220 24% 6%;
 
-    --secondary: 210 29% 15%;
-    --secondary-foreground: 0 0% 93%;
+    --secondary: 220 18% 15%;
+    --secondary-foreground: 0 0% 95%;
 
-    --muted: 210 29% 12%;
-    --muted-foreground: 210 15% 60%;
+    --muted: 220 16% 14%;
+    --muted-foreground: 220 10% 60%;
 
-    --accent: 51 100% 50%;
-    --accent-foreground: 210 29% 6%;
+    --accent: 51 100% 60%;  /* gold accent */
+    --accent-foreground: 220 24% 6%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 93%;
+    --destructive-foreground: 0 0% 95%;
 
-    --border: 210 29% 15%;
-    --input: 210 29% 15%;
-    --ring: 152 100% 50%;
+    --border: 220 18% 18%;
+    --input: 220 18% 16%;
+    --ring: 51 100% 60%;  /* gold ring */
 
-    --radius: 1rem;
+    --radius: 0.75rem;
     
-    /* Custom gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(210 29% 8%), hsl(152 100% 20%));
-    --gradient-card: linear-gradient(145deg, hsl(210 29% 12%), hsl(210 29% 8%));
-    --gradient-shine: linear-gradient(120deg, transparent, hsla(152 100% 50% / 0.3), transparent);
-    --gradient-gold: linear-gradient(135deg, hsl(51 100% 50%), hsl(45 100% 60%));
+    /* StatHub Custom Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(220 24% 8%), hsl(220 24% 12%));
+    --gradient-card: linear-gradient(145deg, hsl(220 20% 12%), hsl(220 20% 8%));
+    --gradient-shine: linear-gradient(120deg, transparent, hsla(51 100% 60% / 0.2), transparent);
+    --gradient-gold: linear-gradient(135deg, hsl(51 100% 60%), hsl(45 100% 65%));
+    --gradient-gold-subtle: linear-gradient(135deg, hsl(51 100% 60% / 0.1), hsl(45 100% 65% / 0.05));
     
-    /* Shadows */
-    --shadow-glow: 0 8px 32px hsla(152 100% 50% / 0.4);
-    --shadow-gold: 0 8px 32px hsla(51 100% 50% / 0.3);
-    --shadow-card: 0 10px 30px hsla(0 0% 0% / 0.5);
+    /* StatHub Shadows */
+    --shadow-glow: 0 8px 32px hsla(51 100% 60% / 0.3);
+    --shadow-gold: 0 4px 20px hsla(51 100% 60% / 0.25);
+    --shadow-card: 0 10px 30px hsla(0 0% 0% / 0.6);
+    --shadow-hover: 0 12px 40px hsla(51 100% 60% / 0.4);
 
     --sidebar-background: 0 0% 98%;
 
@@ -96,7 +99,7 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-poppins;
   }
   
   /* Custom scrollbar */

@@ -4,7 +4,14 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
+import Achievements from "./pages/Achievements";
+import Leaderboard from "./pages/Leaderboard";
+import Matches from "./pages/Matches";
+import Profile from "./pages/Profile";
+import News from "./pages/News";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import { Navigation } from "./components/Navigation";
 
 const queryClient = new QueryClient();
 
@@ -14,8 +21,15 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <Navigation />
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/achievements" element={<Achievements />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/matches" element={<Matches />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/news" element={<News />} />
+          <Route path="/settings" element={<Settings />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
