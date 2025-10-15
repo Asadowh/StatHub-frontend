@@ -12,22 +12,24 @@ interface Match {
   date: string;
   rating: number;
   competition: string;
+  playerGoals: number;
+  playerRating: number;
 }
 
 const matches: Match[] = [
-  { id: 1, homeTeam: "Blue Tigers", awayTeam: "Red Dragons", homeScore: 3, awayScore: 1, date: "May 12, 2025", rating: 8.2, competition: "League" },
-  { id: 2, homeTeam: "Green Eagles", awayTeam: "Yellow Wolves", homeScore: 2, awayScore: 2, date: "May 9, 2025", rating: 7.5, competition: "League" },
-  { id: 3, homeTeam: "Black Panthers", awayTeam: "White Sharks", homeScore: 4, awayScore: 0, date: "May 5, 2025", rating: 9.1, competition: "League" },
-  { id: 4, homeTeam: "Purple Lions", awayTeam: "Orange Phoenixes", homeScore: 1, awayScore: 3, date: "May 1, 2025", rating: 8.0, competition: "League" },
-  { id: 5, homeTeam: "Red Dragons", awayTeam: "Green Eagles", homeScore: 2, awayScore: 1, date: "April 27, 2025", rating: 7.8, competition: "League" },
-  { id: 6, homeTeam: "Yellow Wolves", awayTeam: "Blue Tigers", homeScore: 0, awayScore: 2, date: "April 23, 2025", rating: 7.2, competition: "League" },
-  { id: 7, homeTeam: "White Sharks", awayTeam: "Purple Lions", homeScore: 3, awayScore: 3, date: "April 19, 2025", rating: 8.5, competition: "League" },
-  { id: 8, homeTeam: "Orange Phoenixes", awayTeam: "Black Panthers", homeScore: 1, awayScore: 2, date: "April 15, 2025", rating: 7.9, competition: "League" },
+  { id: 1, homeTeam: "Blue Tigers", awayTeam: "Red Dragons", homeScore: 3, awayScore: 1, date: "May 12, 2025", rating: 8.2, competition: "League", playerGoals: 2, playerRating: 8.5 },
+  { id: 2, homeTeam: "Green Eagles", awayTeam: "Yellow Wolves", homeScore: 2, awayScore: 2, date: "May 9, 2025", rating: 7.5, competition: "League", playerGoals: 1, playerRating: 7.2 },
+  { id: 3, homeTeam: "Black Panthers", awayTeam: "White Sharks", homeScore: 4, awayScore: 0, date: "May 5, 2025", rating: 9.1, competition: "League", playerGoals: 3, playerRating: 9.1 },
+  { id: 4, homeTeam: "Purple Lions", awayTeam: "Orange Phoenixes", homeScore: 1, awayScore: 3, date: "May 1, 2025", rating: 8.0, competition: "League", playerGoals: 0, playerRating: 6.8 },
+  { id: 5, homeTeam: "Red Dragons", awayTeam: "Green Eagles", homeScore: 2, awayScore: 1, date: "April 27, 2025", rating: 7.8, competition: "League", playerGoals: 1, playerRating: 8.0 },
+  { id: 6, homeTeam: "Yellow Wolves", awayTeam: "Blue Tigers", homeScore: 0, awayScore: 2, date: "April 23, 2025", rating: 7.2, competition: "League", playerGoals: 2, playerRating: 7.5 },
+  { id: 7, homeTeam: "White Sharks", awayTeam: "Purple Lions", homeScore: 3, awayScore: 3, date: "April 19, 2025", rating: 8.5, competition: "League", playerGoals: 1, playerRating: 6.5 },
+  { id: 8, homeTeam: "Orange Phoenixes", awayTeam: "Black Panthers", homeScore: 1, awayScore: 2, date: "April 15, 2025", rating: 7.9, competition: "League", playerGoals: 2, playerRating: 8.8 },
 ];
 
 const Matches = () => {
-  const avgRating = (matches.reduce((sum, m) => sum + m.rating, 0) / matches.length).toFixed(1);
-  const totalGoals = matches.reduce((sum, m) => sum + m.homeScore + m.awayScore, 0);
+  const avgRating = (matches.reduce((sum, m) => sum + m.playerRating, 0) / matches.length).toFixed(1);
+  const totalGoals = matches.reduce((sum, m) => sum + m.playerGoals, 0);
   const totalMatches = matches.length;
 
   const getWinner = (match: Match) => {
@@ -58,15 +60,15 @@ const Matches = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card className="p-6 text-center bg-gradient-to-br from-card to-card/50">
             <p className="text-3xl font-bold text-primary">{avgRating}</p>
-            <p className="text-sm text-muted-foreground mt-1">Average Match Rating</p>
+            <p className="text-sm text-muted-foreground mt-1">Your Avg Rating</p>
           </Card>
           <Card className="p-6 text-center bg-gradient-to-br from-card to-card/50">
             <p className="text-3xl font-bold text-primary">{totalGoals}</p>
-            <p className="text-sm text-muted-foreground mt-1">Total Goals Scored</p>
+            <p className="text-sm text-muted-foreground mt-1">Your Total Goals</p>
           </Card>
           <Card className="p-6 text-center bg-gradient-to-br from-card to-card/50">
             <p className="text-3xl font-bold text-primary">{totalMatches}</p>
-            <p className="text-sm text-muted-foreground mt-1">Total Matches Played</p>
+            <p className="text-sm text-muted-foreground mt-1">Matches Played</p>
           </Card>
         </div>
 
@@ -108,14 +110,9 @@ const Matches = () => {
                         </span>
                       </h3>
                     </div>
-                    <div className="flex items-center gap-3 flex-wrap text-sm">
-                      <Badge variant="outline" className="border-primary/30 text-primary">
-                        {match.competition}
-                      </Badge>
-                      <div className="flex items-center gap-2 text-muted-foreground">
-                        <Calendar className="w-4 h-4" />
-                        <span>{match.date}</span>
-                      </div>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Calendar className="w-4 h-4" />
+                      <span>{match.date}</span>
                     </div>
                     {winner !== "Draw" && (
                       <p className="text-sm text-muted-foreground">
