@@ -32,9 +32,6 @@ const players: Player[] = [
 ];
 
 const Leaderboard = () => {
-  const [filter, setFilter] = useState<string>("Global");
-  
-  const filters = ["Global", "Goalkeepers", "Defenders", "Midfielders", "Attackers"];
 
   const getRankColor = (rank: number) => {
     if (rank === 1) return "text-yellow-500";
@@ -59,21 +56,7 @@ const Leaderboard = () => {
             <Trophy className="w-10 h-10 text-primary" />
             <h1 className="text-4xl font-bold">Leaderboard</h1>
           </div>
-          <p className="text-muted-foreground">Compete with the best players worldwide</p>
-        </div>
-
-        {/* Filters */}
-        <div className="flex gap-2 flex-wrap justify-center">
-          {filters.map((filterOption) => (
-            <Button
-              key={filterOption}
-              variant={filter === filterOption ? "default" : "outline"}
-              onClick={() => setFilter(filterOption)}
-              className={filter === filterOption ? "bg-primary text-primary-foreground" : ""}
-            >
-              {filterOption}
-            </Button>
-          ))}
+          <p className="text-muted-foreground">Overall player rankings based on total achievements and performance</p>
         </div>
 
         {/* Top 3 Podium */}
