@@ -28,9 +28,6 @@ const matches: Match[] = [
 ];
 
 const Matches = () => {
-  const avgRating = (matches.reduce((sum, m) => sum + m.playerRating, 0) / matches.length).toFixed(1);
-  const totalGoals = matches.reduce((sum, m) => sum + m.playerGoals, 0);
-  const totalMatches = matches.length;
 
   const getWinner = (match: Match) => {
     if (match.homeScore > match.awayScore) return match.homeTeam;
@@ -56,21 +53,29 @@ const Matches = () => {
           <Trophy className="w-12 h-12 text-primary" />
         </div>
 
-        {/* Summary Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card className="p-6 text-center bg-gradient-to-br from-card to-card/50">
-            <p className="text-3xl font-bold text-primary">{avgRating}</p>
-            <p className="text-sm text-muted-foreground mt-1">Your Avg Rating</p>
-          </Card>
-          <Card className="p-6 text-center bg-gradient-to-br from-card to-card/50">
-            <p className="text-3xl font-bold text-primary">{totalGoals}</p>
-            <p className="text-sm text-muted-foreground mt-1">Your Total Goals</p>
-          </Card>
-          <Card className="p-6 text-center bg-gradient-to-br from-card to-card/50">
-            <p className="text-3xl font-bold text-primary">{totalMatches}</p>
-            <p className="text-sm text-muted-foreground mt-1">Matches Played</p>
-          </Card>
-        </div>
+        {/* Next Match Announcement */}
+        <Card className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-card to-card border-primary/30 shadow-gold">
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=2070')] bg-cover bg-center opacity-10" />
+          <div className="relative p-8">
+            <h2 className="text-2xl font-bold text-primary mb-6">Next Game Announcement</h2>
+            <div className="space-y-4">
+              <div className="flex items-center justify-center gap-4 text-3xl font-bold">
+                <span>Turan-Tovuz FK</span>
+                <span className="text-muted-foreground">vs</span>
+                <span>Neftçi Baku</span>
+              </div>
+              <div className="flex flex-col md:flex-row items-center justify-center gap-4 text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-5 h-5" />
+                  <span>May 18, 2025 • 19:00</span>
+                </div>
+                <span className="hidden md:block">•</span>
+                <span>Tovuz City Stadium</span>
+              </div>
+              <p className="text-center text-primary font-semibold text-lg">Kickoff in 2 days</p>
+            </div>
+          </div>
+        </Card>
 
         {/* Filters */}
         <div className="flex gap-2 flex-wrap justify-center md:justify-start">

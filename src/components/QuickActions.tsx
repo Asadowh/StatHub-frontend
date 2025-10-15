@@ -1,15 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
-import { Medal, Users, Trophy } from "lucide-react";
+import { Users, Trophy, BarChart3 } from "lucide-react";
 
 const actions = [
   { 
-    title: "Achievements", 
-    description: "Track your progress", 
-    icon: Medal, 
-    path: "/achievements",
-    gradient: "from-yellow-500/10 to-orange-500/10",
-    iconColor: "text-yellow-500"
+    title: "Leaderboard", 
+    description: "See your global rank", 
+    icon: Users, 
+    path: "/leaderboard",
+    gradient: "from-primary/10 to-primary/5",
+    iconColor: "text-primary"
   },
   { 
     title: "Trophies", 
@@ -21,12 +21,12 @@ const actions = [
     glow: true
   },
   { 
-    title: "Matches", 
-    description: "View match history", 
-    icon: Trophy, 
-    path: "/matches",
-    gradient: "from-primary/10 to-primary/5",
-    iconColor: "text-primary"
+    title: "StatHub Ranking", 
+    description: "Compare top player stats", 
+    icon: BarChart3, 
+    path: "/stathub-ranking",
+    gradient: "from-blue-500/10 to-cyan-500/10",
+    iconColor: "text-blue-400"
   },
 ];
 

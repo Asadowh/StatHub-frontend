@@ -11,6 +11,7 @@ import Matches from "./pages/Matches";
 import Profile from "./pages/Profile";
 import News from "./pages/News";
 import Settings from "./pages/Settings";
+import StatHubRanking from "./pages/StatHubRanking";
 import NotFound from "./pages/NotFound";
 import { Navigation } from "./components/Navigation";
 
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/matches" element={<Matches />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/news" element={<News />} />
+          <Route path="/stathub-ranking" element={<StatHubRanking />} />
           <Route path="/settings" element={<Settings />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
