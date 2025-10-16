@@ -150,8 +150,38 @@ const matches: Match[] = [
   { id: 8, homeTeam: "Orange Phoenixes", awayTeam: "Black Panthers", homeScore: 1, awayScore: 2, date: "April 15, 2025", rating: 7.9, competition: "League", playerGoals: 2, playerRating: 8.8, homePlayers: [], awayPlayers: [] },
 ];
 
+const upcomingMatchSquads = {
+  homePlayers: [
+    { rank: 1, name: "Emil Balayev", position: "Forward", rating: 0, nationality: "🇦🇿" },
+    { rank: 2, name: "Rashad Sadygov", position: "Midfielder", rating: 0, nationality: "🇦🇿" },
+    { rank: 3, name: "Elvin Jamalov", position: "Defender", rating: 0, nationality: "🇦🇿" },
+    { rank: 4, name: "Araz Abdullayev", position: "Midfielder", rating: 0, nationality: "🇦🇿" },
+    { rank: 5, name: "Namig Yusifov", position: "Forward", rating: 0, nationality: "🇦🇿" },
+    { rank: 6, name: "Tural Rzayev", position: "Defender", rating: 0, nationality: "🇦🇿" },
+    { rank: 7, name: "Kamran Guliyev", position: "Goalkeeper", rating: 0, nationality: "🇦🇿" },
+    { rank: 8, name: "Farid Nabiyev", position: "Defender", rating: 0, nationality: "🇦🇿" },
+    { rank: 9, name: "Vugar Mustafayev", position: "Midfielder", rating: 0, nationality: "🇦🇿" },
+    { rank: 10, name: "Jeyhun Nuriyev", position: "Forward", rating: 0, nationality: "🇦🇿" },
+    { rank: 11, name: "Samir Alakbarov", position: "Midfielder", rating: 0, nationality: "🇦🇿" },
+  ],
+  awayPlayers: [
+    { rank: 1, name: "Rahman Hajiyev", position: "Forward", rating: 0, nationality: "🇦🇿" },
+    { rank: 2, name: "Cesar Daniel", position: "Midfielder", rating: 0, nationality: "🇧🇷" },
+    { rank: 3, name: "Rahim Sadikhov", position: "Defender", rating: 0, nationality: "🇦🇿" },
+    { rank: 4, name: "Emin Mahmudov", position: "Midfielder", rating: 0, nationality: "🇦🇿" },
+    { rank: 5, name: "Filip Ozobic", position: "Midfielder", rating: 0, nationality: "🇭🇷" },
+    { rank: 6, name: "Sergey Zenjov", position: "Forward", rating: 0, nationality: "🇪🇪" },
+    { rank: 7, name: "Rza Jafarov", position: "Defender", rating: 0, nationality: "🇦🇿" },
+    { rank: 8, name: "Aqil Mammadov", position: "Goalkeeper", rating: 0, nationality: "🇦🇿" },
+    { rank: 9, name: "Ismayil Zulfugarli", position: "Defender", rating: 0, nationality: "🇦🇿" },
+    { rank: 10, name: "Yusif Imanov", position: "Midfielder", rating: 0, nationality: "🇦🇿" },
+    { rank: 11, name: "Musa Qurbanli", position: "Forward", rating: 0, nationality: "🇦🇿" },
+  ],
+};
+
 const Matches = () => {
   const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
+  const [showUpcomingSquads, setShowUpcomingSquads] = useState(false);
 
   const getWinner = (match: Match) => {
     if (match.homeScore > match.awayScore) return match.homeTeam;
@@ -180,6 +210,17 @@ const Matches = () => {
           awayPlayers={selectedMatch.awayPlayers}
         />
       )}
+      
+      <MatchDetailDialog
+        open={showUpcomingSquads}
+        onOpenChange={setShowUpcomingSquads}
+        homeTeam="Turan-Tovuz FK"
+        awayTeam="Neftçi Baku"
+        date="May 18, 2025 • 19:00"
+        homePlayers={upcomingMatchSquads.homePlayers}
+        awayPlayers={upcomingMatchSquads.awayPlayers}
+        isUpcoming={true}
+      />
       <div className="space-y-8">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -191,7 +232,10 @@ const Matches = () => {
         </div>
 
         {/* Next Match Announcement */}
-        <Card className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-card to-card border-primary/30 shadow-gold">
+        <Card 
+          className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-card to-card border-primary/30 shadow-gold cursor-pointer hover:border-primary/50 transition-all duration-300"
+          onClick={() => setShowUpcomingSquads(true)}
+        >
           <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=2070')] bg-cover bg-center opacity-10" />
           <div className="relative p-8">
             <h2 className="text-2xl font-bold text-primary mb-6">Next Game Announcement</h2>

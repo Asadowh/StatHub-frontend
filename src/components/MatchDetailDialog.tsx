@@ -16,11 +16,12 @@ interface MatchDetailDialogProps {
   onOpenChange: (open: boolean) => void;
   homeTeam: string;
   awayTeam: string;
-  homeScore: number;
-  awayScore: number;
+  homeScore?: number;
+  awayScore?: number;
   date: string;
   homePlayers: Player[];
   awayPlayers: Player[];
+  isUpcoming?: boolean;
 }
 
 const getRatingColor = (rating: number) => {
@@ -41,6 +42,7 @@ export const MatchDetailDialog = ({
   date,
   homePlayers,
   awayPlayers,
+  isUpcoming = false,
 }: MatchDetailDialogProps) => {
   const PlayerList = ({ players, teamName }: { players: Player[]; teamName: string }) => (
     <div className="space-y-3">
@@ -65,8 +67,8 @@ export const MatchDetailDialog = ({
             <p className="font-semibold">{player.name}</p>
             <p className="text-xs text-muted-foreground">{player.position}</p>
           </div>
-          <Badge className={`${getRatingColor(player.rating)} text-white border-0 text-base font-bold px-3 py-1`}>
-            {player.rating.toFixed(2)}
+          <Badge className={`${isUpcoming ? 'bg-muted text-muted-foreground' : getRatingColor(player.rating)} ${isUpcoming ? '' : 'text-white'} border-0 text-base font-bold px-3 py-1`}>
+            {isUpcoming ? '-' : player.rating.toFixed(2)}
           </Badge>
         </div>
       ))}
@@ -77,11 +79,12 @@ export const MatchDetailDialog = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-center text-2xl">Match Player Ratings</DialogTitle>
+          <DialogTitle className="text-center text-2xl">{isUpcoming ? 'Upcoming Match Squads' : 'Match Player Ratings'}</DialogTitle>
           <div className="text-center space-y-2 pt-2">
             <div className="flex items-center justify-center gap-4 text-2xl font-bold">
               <span>{homeTeam}</span>
-              <span className="text-primary">{homeScore} - {awayScore}</span>
+              {!isUpcoming && <span className="text-primary">{homeScore} - {awayScore}</span>}
+              {isUpcoming && <span className="text-muted-foreground">vs</span>}
               <span>{awayTeam}</span>
             </div>
             <p className="text-sm text-muted-foreground">{date}</p>
