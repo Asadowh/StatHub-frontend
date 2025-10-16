@@ -19,6 +19,7 @@ interface ProfileData {
   favoritePosition: string;
   level: number;
   xp: number;
+  quote?: string;
 }
 
 interface EditProfileModalProps {
@@ -275,6 +276,25 @@ export const EditProfileModal = ({ profileData, onSave }: EditProfileModalProps)
                 <SelectItem value="CF">CF - Center Forward</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="quote">Personal Quote</Label>
+            <Input
+              id="quote"
+              value={formData.quote || ""}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value.length <= 120) {
+                  setFormData({ ...formData, quote: value });
+                }
+              }}
+              placeholder="Add a short motto or expression"
+              className="bg-background border-border"
+              maxLength={120}
+            />
+            <p className="text-xs text-muted-foreground">
+              {formData.quote?.length || 0}/120 characters
+            </p>
           </div>
         </div>
         <div className="flex gap-3">

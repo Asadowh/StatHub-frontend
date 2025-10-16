@@ -15,7 +15,20 @@ const Profile = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const [profileData, setProfileData] = useState({
+  const [profileData, setProfileData] = useState<{
+    name: string;
+    username: string;
+    jerseyNumber: number;
+    nationality: string;
+    birthDay: number;
+    birthMonth: number;
+    birthYear: number;
+    height: string;
+    favoritePosition: string;
+    level: number;
+    xp: number;
+    quote?: string;
+  }>({
     name: "Sami Ali",
     username: "samiali",
     jerseyNumber: 10,
@@ -27,6 +40,7 @@ const Profile = () => {
     favoritePosition: "Forward",
     level: 12,
     xp: 8500,
+    quote: "Play with passion, win with pride",
   });
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -74,7 +88,11 @@ const Profile = () => {
             <div className="flex-1 space-y-6">
               <div>
                 <h1 className="text-4xl font-bold mb-2">{profileData.name}</h1>
-                <p className="text-muted-foreground italic">"Play with passion, win with pride"</p>
+                {profileData.quote ? (
+                  <p className="text-muted-foreground italic">"{profileData.quote}"</p>
+                ) : (
+                  <p className="text-muted-foreground/50 italic text-sm">Add your personal quote</p>
+                )}
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">

@@ -1,4 +1,4 @@
-import { User, Edit, LogOut } from "lucide-react";
+import { Settings, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
   DropdownMenu,
@@ -31,18 +31,11 @@ export const UserMenu = () => {
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-border" />
         <DropdownMenuItem 
-          onClick={() => navigate("/profile")}
+          onClick={() => navigate("/settings")}
           className="cursor-pointer hover:bg-secondary focus:bg-secondary"
         >
-          <User className="mr-2 h-4 w-4" />
-          <span>Profile</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem 
-          onClick={() => navigate("/profile")}
-          className="cursor-pointer hover:bg-secondary focus:bg-secondary"
-        >
-          <Edit className="mr-2 h-4 w-4" />
-          <span>Edit Profile</span>
+          <Settings className="mr-2 h-4 w-4" />
+          <span>Settings</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator className="bg-border" />
         <DropdownMenuItem 
