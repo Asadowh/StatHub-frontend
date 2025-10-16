@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Settings as SettingsIcon, User, Shield, LogOut } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { formatHeight } from "@/lib/utils";
 
 const Settings = () => {
   const { toast } = useToast();
@@ -84,9 +85,13 @@ const Settings = () => {
                 </div>
               </div>
               <div className="grid gap-2">
-                <Label>Height (cm)</Label>
-                <div className="px-3 py-2 bg-background border border-border rounded-md text-foreground cursor-default">
-                  178
+                <Label>Height</Label>
+                <div className="px-3 py-2 bg-background border border-border rounded-md cursor-default">
+                  <span className="text-foreground">{formatHeight(178).split('(')[0].trim()}</span>
+                  {' '}
+                  <span className="text-muted-foreground">
+                    ({formatHeight(178).split('(')[1]?.replace(')', '') || ''})
+                  </span>
                 </div>
               </div>
             </div>

@@ -9,6 +9,7 @@ import trophyIcon from "@/assets/trophy-icon.png";
 import badgeIcon from "@/assets/badge-icon.png";
 import { CountryBadge } from "@/components/CountryBadge";
 import { EditProfileModal } from "@/components/EditProfileModal";
+import { formatHeight } from "@/lib/utils";
 
 const Profile = () => {
   useEffect(() => {
@@ -106,7 +107,12 @@ const Profile = () => {
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <Ruler className="w-4 h-4 text-primary" />
-                  <span className="text-muted-foreground">{profileData.height}</span>
+                  <span className="text-muted-foreground">
+                    {formatHeight(profileData.height).split('(')[0].trim()}{' '}
+                    <span className="text-muted-foreground/60">
+                      ({formatHeight(profileData.height).split('(')[1]?.replace(')', '') || ''})
+                    </span>
+                  </span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <Target className="w-4 h-4 text-primary" />
