@@ -37,7 +37,7 @@ const Profile = () => {
     birthDay: 15,
     birthMonth: 3,
     birthYear: 2001,
-    height: "178 cm",
+    height: "178",
     favoritePosition: "Forward",
     level: 12,
     xp: 8500,
