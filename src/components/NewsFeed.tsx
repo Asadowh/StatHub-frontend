@@ -16,14 +16,15 @@ interface NewsItemProps {
   comments?: number;
   category?: string;
   imageUrl?: string;
+  newsId: number;
 }
 
-const NewsItem = ({ title, description, timestamp, likes = 0, comments = 0, category = "Team News", imageUrl }: NewsItemProps) => {
+const NewsItem = ({ title, description, timestamp, likes = 0, comments = 0, category = "Team News", imageUrl, newsId }: NewsItemProps) => {
   const navigate = useNavigate();
   
   return (
     <Card 
-      onClick={() => navigate('/news')}
+      onClick={() => navigate('/news', { state: { postId: newsId } })}
       className="gradient-card border-2 border-primary/20 overflow-hidden hover:border-primary/40 transition-all cursor-pointer group"
     >
       {imageUrl && (
@@ -72,6 +73,7 @@ const NewsItem = ({ title, description, timestamp, likes = 0, comments = 0, cate
 export const NewsFeed = () => {
   const newsItems = [
     {
+      newsId: 4,
       title: "Ali's Concert Success! 🎯",
       description: "Ali bagged a girl at the concert last night with my help - coaches don't play! The wingman of the century strikes again. The whole squad knows who the real MVP is off the pitch.",
       timestamp: "2 hours ago",
@@ -81,6 +83,7 @@ export const NewsFeed = () => {
       imageUrl: concertPic
     },
     {
+      newsId: 1,
       title: "Marcus Scores Hat-Trick! ⚽⚽⚽",
       description: "Marcus scored his first hat-trick in training today and coach is seriously impressed! Three incredible goals in 15 minutes. The striker is on fire and ready for the weekend match.",
       timestamp: "5 hours ago",
@@ -90,6 +93,7 @@ export const NewsFeed = () => {
       imageUrl: news2
     },
     {
+      newsId: 2,
       title: "Pizza Party Chaos! 🍕",
       description: "Team dinner got absolutely wild last night. Someone ordered 15 large pizzas and we STILL ran out! The whole squad was starving after that intense practice session.",
       timestamp: "1 day ago",
@@ -99,6 +103,7 @@ export const NewsFeed = () => {
       imageUrl: news3
     },
     {
+      newsId: 5,
       title: "Jake Goes Viral! 🕺",
       description: "Jake's new celebration dance has taken TikTok by storm with over 1 million views already! The whole team is trying to learn it for the next match. Prepare for stadium-wide dance-offs!",
       timestamp: "2 days ago",
@@ -108,6 +113,7 @@ export const NewsFeed = () => {
       imageUrl: news4
     },
     {
+      newsId: 6,
       title: "Rocky IV Pre-Match Ritual 🥊",
       description: "Team tradition continues! We're watching Rocky IV before tomorrow's big match. It worked last time and the energy was incredible. If it ain't broke, don't fix it!",
       timestamp: "3 days ago",

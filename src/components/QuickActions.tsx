@@ -33,6 +33,11 @@ const actions = [
 export const QuickActions = () => {
   const navigate = useNavigate();
 
+  const handleNavigate = (path: string) => {
+    navigate(path);
+    window.scrollTo(0, 0);
+  };
+
   return (
     <section className="space-y-4">
       <h3 className="text-xl font-semibold">Quick Actions</h3>
@@ -41,7 +46,7 @@ export const QuickActions = () => {
         {actions.map((action) => (
           <Card
             key={action.path}
-            onClick={() => navigate(action.path)}
+            onClick={() => handleNavigate(action.path)}
             className={`p-6 bg-gradient-to-br ${action.gradient} border-border/50 hover:border-primary/50 cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-gold group ${action.glow ? 'shadow-[0_0_15px_rgba(250,204,21,0.15)]' : ''}`}
           >
             <div className="flex items-center gap-4">

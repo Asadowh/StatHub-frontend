@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -144,10 +145,22 @@ const newsPosts: NewsPost[] = [
 ];
 
 const News = () => {
+  const location = useLocation();
   const [selectedPost, setSelectedPost] = useState<NewsPost | null>(null);
   const [commentText, setCommentText] = useState("");
   const [localPosts, setLocalPosts] = useState(newsPosts);
   const [reactions, setReactions] = useState<{ [key: number]: { liked: boolean; laughed: boolean; fired: boolean } }>({});
+
+  useEffect(() => {
+    if (location.state && (location.state as any).postId) {
+      const postId = (location.state as any).postId;
+      const post = newsPosts.find(p => p.id === postId);
+      if (post) {
+        setSelectedPost(post);
+        window.scrollTo(0, 0);
+      }
+    }
+  }, [location]);
 
   const getCategoryColor = (category: string) => {
     switch(category) {

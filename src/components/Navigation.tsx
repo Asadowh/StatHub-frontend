@@ -7,7 +7,7 @@ const navItems = [
   { title: "Matches", path: "/matches", icon: Trophy },
   { title: "Achievements", path: "/achievements", icon: Medal },
   { title: "Profile", path: "/profile", icon: User },
-  { title: "News", path: "/news", icon: Newspaper },
+  { title: "Press Room", path: "/news", icon: Newspaper },
 ];
 
 export const Navigation = () => {
