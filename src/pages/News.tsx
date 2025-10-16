@@ -157,9 +157,10 @@ const News = () => {
       const post = newsPosts.find(p => p.id === postId);
       if (post) {
         setSelectedPost(post);
-        window.scrollTo(0, 0);
       }
     }
+    // Always scroll to top when navigating to News page
+    window.scrollTo(0, 0);
   }, [location]);
 
   const getCategoryColor = (category: string) => {
