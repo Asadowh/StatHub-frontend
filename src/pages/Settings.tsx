@@ -1,23 +1,68 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { Settings as SettingsIcon, User, Shield, LogOut } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { formatHeight } from "@/lib/utils";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+
+const passwordSchema = z.object({
+  currentPassword: z.string().min(1, "Current password is required"),
+  newPassword: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .regex(/[A-Z]/, "Password must include at least one uppercase letter")
+    .regex(/[a-z]/, "Password must include at least one lowercase letter")
+    .regex(/[0-9]/, "Password must include at least one number")
+    .regex(/[^A-Za-z0-9]/, "Password must include at least one special character"),
+  confirmPassword: z.string().min(1, "Please confirm your password"),
+}).refine((data) => data.newPassword === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
+});
 
 const Settings = () => {
   const { toast } = useToast();
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+
+  const form = useForm<z.infer<typeof passwordSchema>>({
+    resolver: zodResolver(passwordSchema),
+    defaultValues: {
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    },
+  });
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const handleSave = () => {
+  const onSubmitPasswordChange = (values: z.infer<typeof passwordSchema>) => {
+    // Simulate password change - in real app, this would call an API
     toast({
-      title: "Settings saved",
-      description: "Your preferences have been updated successfully.",
+      title: "Password updated successfully",
+      description: "Your password has been changed.",
     });
+    form.reset();
+    setIsChangingPassword(false);
+  };
+
+  const handleCancelPasswordChange = () => {
+    form.reset();
+    setIsChangingPassword(false);
   };
 
   const handleLogout = () => {
@@ -105,21 +150,89 @@ const Settings = () => {
             <h2 className="text-2xl font-bold">Security</h2>
           </div>
 
-          <div className="space-y-4">
-            <div className="grid gap-2">
-              <Label>Current Password</Label>
-              <div className="px-3 py-2 bg-background border border-border rounded-md text-foreground cursor-default">
-                ••••••••
+          {!isChangingPassword ? (
+            <div className="space-y-4">
+              <div className="grid gap-2">
+                <Label>Current Password</Label>
+                <div className="px-3 py-2 bg-background border border-border rounded-md text-foreground cursor-default">
+                  ••••••••
+                </div>
               </div>
-            </div>
 
-            <div className="grid gap-2">
-              <Label>Security Status</Label>
-              <div className="px-3 py-2 bg-background border border-border rounded-md text-muted-foreground cursor-default">
-                Password last changed 30 days ago
+              <div className="grid gap-2">
+                <Label>Security Status</Label>
+                <div className="px-3 py-2 bg-background border border-border rounded-md text-muted-foreground cursor-default">
+                  Password last changed 30 days ago
+                </div>
               </div>
+
+              <Button 
+                onClick={() => setIsChangingPassword(true)}
+                className="mt-4"
+              >
+                Change Password
+              </Button>
             </div>
-          </div>
+          ) : (
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmitPasswordChange)} className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="currentPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Current Password</FormLabel>
+                      <FormControl>
+                        <Input type="password" placeholder="Enter current password" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="newPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>New Password</FormLabel>
+                      <FormControl>
+                        <Input type="password" placeholder="Enter new password" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="confirmPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Confirm New Password</FormLabel>
+                      <FormControl>
+                        <Input type="password" placeholder="Re-enter new password" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <div className="flex justify-end gap-3 mt-6">
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    onClick={handleCancelPasswordChange}
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit">
+                    Save Changes
+                  </Button>
+                </div>
+              </form>
+            </Form>
+          )}
         </Card>
 
         {/* Action Buttons */}
