@@ -69,10 +69,11 @@ export const EditProfileModal = ({ profileData, onSave }: EditProfileModalProps)
           Edit Profile
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px] bg-card border-primary/30">
+      <DialogContent className="sm:max-w-[500px] max-h-[90vh] bg-card border-primary/30">
         <DialogHeader>
           <DialogTitle className="text-2xl text-foreground">Edit Profile</DialogTitle>
         </DialogHeader>
+        <ScrollArea className="max-h-[60vh] pr-4">
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">
             <Label htmlFor="name">Full Name</Label>
@@ -297,6 +298,7 @@ export const EditProfileModal = ({ profileData, onSave }: EditProfileModalProps)
             </p>
           </div>
         </div>
+        </ScrollArea>
         <div className="flex gap-3">
           <Button variant="outline" onClick={() => setOpen(false)} className="flex-1">
             Cancel

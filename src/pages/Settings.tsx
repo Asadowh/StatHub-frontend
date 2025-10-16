@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import { Settings as SettingsIcon, User, Bell, Shield, LogOut } from "lucide-react";
+import { Settings as SettingsIcon, User, Shield, LogOut } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const Settings = () => {
@@ -80,54 +80,6 @@ const Settings = () => {
                 <Label htmlFor="height">Height (cm)</Label>
                 <Input id="height" type="number" defaultValue="178" className="bg-background border-border" />
               </div>
-            </div>
-          </div>
-        </Card>
-
-        {/* Notification Settings */}
-        <Card className="p-6 bg-gradient-to-br from-card to-card/50 border-border/50">
-          <div className="flex items-center gap-3 mb-6">
-            <Bell className="w-5 h-5 text-primary" />
-            <h2 className="text-2xl font-bold">Notifications</h2>
-          </div>
-
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label>Match Reminders</Label>
-                <p className="text-sm text-muted-foreground">Get notified before upcoming matches</p>
-              </div>
-              <Switch defaultChecked />
-            </div>
-
-            <Separator className="bg-border/50" />
-
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label>Achievement Updates</Label>
-                <p className="text-sm text-muted-foreground">Notifications when you unlock achievements</p>
-              </div>
-              <Switch defaultChecked />
-            </div>
-
-            <Separator className="bg-border/50" />
-
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label>Leaderboard Changes</Label>
-                <p className="text-sm text-muted-foreground">Updates when your rank changes</p>
-              </div>
-              <Switch />
-            </div>
-
-            <Separator className="bg-border/50" />
-
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label>Team News</Label>
-                <p className="text-sm text-muted-foreground">Get updates from the news feed</p>
-              </div>
-              <Switch defaultChecked />
             </div>
           </div>
         </Card>
