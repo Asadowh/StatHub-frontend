@@ -60,14 +60,22 @@ export const EditProfileModal = ({ profileData, onSave }: EditProfileModalProps)
 
   const validateHeight = (value: string): boolean => {
     if (!value || value === '') {
-      setHeightError("");
-      return true;
-    }
-    const numValue = parseFloat(value);
-    if (isNaN(numValue) || numValue < 0 || numValue > 250) {
-      setHeightError("Please enter a valid height between 0 and 250 cm.");
+      setHeightError("Please enter a whole number between 0 and 250.");
       return false;
     }
+    
+    // Check if it's a valid integer (no decimals)
+    if (!/^\d+$/.test(value)) {
+      setHeightError("Please enter a whole number between 0 and 250.");
+      return false;
+    }
+    
+    const numValue = parseInt(value, 10);
+    if (numValue < 0 || numValue > 250) {
+      setHeightError("Please enter a whole number between 0 and 250.");
+      return false;
+    }
+    
     setHeightError("");
     return true;
   };
@@ -268,10 +276,33 @@ export const EditProfileModal = ({ profileData, onSave }: EditProfileModalProps)
               value={formData.height}
               onChange={(e) => {
                 const value = e.target.value;
-                setFormData({ ...formData, height: value });
-                validateHeight(value);
+                
+                // Only allow empty string or valid integers
+                if (value === '' || /^\d+$/.test(value)) {
+                  const numValue = value === '' ? 0 : parseInt(value, 10);
+                  
+                  // Prevent typing if it would exceed 250
+                  if (value === '' || numValue <= 250) {
+                    setFormData({ ...formData, height: value });
+                    
+                    // Only validate if there's a value
+                    if (value !== '') {
+                      validateHeight(value);
+                    } else {
+                      setHeightError("Please enter a whole number between 0 and 250.");
+                    }
+                  }
+                }
+                // If invalid characters are typed, do nothing (input is blocked)
               }}
-              onBlur={(e) => validateHeight(e.target.value)}
+              onBlur={(e) => {
+                const value = e.target.value;
+                if (value === '') {
+                  setHeightError("Please enter a whole number between 0 and 250.");
+                } else {
+                  validateHeight(value);
+                }
+              }}
               className={`bg-background border-border ${heightError ? 'border-destructive' : ''}`}
               placeholder="e.g., 178"
             />
