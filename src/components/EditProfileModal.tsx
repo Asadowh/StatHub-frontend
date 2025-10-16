@@ -33,6 +33,7 @@ export const EditProfileModal = ({ profileData, onSave }: EditProfileModalProps)
   const [nationalityInput, setNationalityInput] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredCountries, setFilteredCountries] = useState<CountryData[]>([]);
+  const [heightError, setHeightError] = useState("");
 
   const handleNationalityChange = (value: string) => {
     setNationalityInput(value);
@@ -57,7 +58,24 @@ export const EditProfileModal = ({ profileData, onSave }: EditProfileModalProps)
     setShowSuggestions(false);
   };
 
+  const validateHeight = (value: string): boolean => {
+    if (!value || value === '') {
+      setHeightError("");
+      return true;
+    }
+    const numValue = parseFloat(value);
+    if (isNaN(numValue) || numValue < 0 || numValue > 250) {
+      setHeightError("Please enter a valid height between 0 and 250 cm.");
+      return false;
+    }
+    setHeightError("");
+    return true;
+  };
+
   const handleSave = () => {
+    if (heightError) {
+      return;
+    }
     onSave(formData);
     setOpen(false);
   };
@@ -242,13 +260,24 @@ export const EditProfileModal = ({ profileData, onSave }: EditProfileModalProps)
             </div>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="height">Height</Label>
+            <Label htmlFor="height">Height (cm)</Label>
             <Input
               id="height"
+              type="text"
+              inputMode="numeric"
               value={formData.height}
-              onChange={(e) => setFormData({ ...formData, height: e.target.value })}
-              className="bg-background border-border"
+              onChange={(e) => {
+                const value = e.target.value;
+                setFormData({ ...formData, height: value });
+                validateHeight(value);
+              }}
+              onBlur={(e) => validateHeight(e.target.value)}
+              className={`bg-background border-border ${heightError ? 'border-destructive' : ''}`}
+              placeholder="e.g., 178"
             />
+            {heightError && (
+              <p className="text-xs text-destructive mt-1">{heightError}</p>
+            )}
           </div>
           <div className="grid gap-2">
             <Label htmlFor="position">Favorite Position</Label>
@@ -303,7 +332,11 @@ export const EditProfileModal = ({ profileData, onSave }: EditProfileModalProps)
           <Button variant="outline" onClick={() => setOpen(false)} className="flex-1">
             Cancel
           </Button>
-          <Button onClick={handleSave} className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground">
+          <Button 
+            onClick={handleSave} 
+            disabled={!!heightError}
+            className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground disabled:opacity-50 disabled:cursor-not-allowed"
+          >
             Save Changes
           </Button>
         </div>
