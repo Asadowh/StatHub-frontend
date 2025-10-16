@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -9,6 +10,9 @@ import badgeIcon from "@/assets/badge-icon.png";
 import { CountryBadge } from "@/components/CountryBadge";
 
 const Profile = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const topAchievements = [
     { name: "Hat-Trick Hero", tier: "Expert", points: 100 },
     { name: "Assist Master", tier: "Advanced", points: 75 },
