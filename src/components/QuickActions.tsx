@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Users, Trophy, BarChart3 } from "lucide-react";
 
@@ -30,6 +31,13 @@ const actions = [
 ];
 
 export const QuickActions = () => {
+  const navigate = useNavigate();
+
+  const handleNavigate = (path: string) => {
+    navigate(path);
+    window.scrollTo(0, 0);
+  };
+
   return (
     <section className="space-y-4">
       <h3 className="text-xl font-semibold">Quick Actions</h3>
@@ -38,7 +46,8 @@ export const QuickActions = () => {
         {actions.map((action) => (
           <Card
             key={action.path}
-            className={`p-6 bg-gradient-to-br ${action.gradient} border-border/50 hover:border-primary/50 transition-all duration-300 hover:scale-[1.03] hover:shadow-lg group ${action.glow ? 'shadow-[0_0_15px_rgba(250,204,21,0.15)] hover:shadow-[0_0_25px_rgba(250,204,21,0.25)]' : ''}`}
+            onClick={() => handleNavigate(action.path)}
+            className={`p-6 bg-gradient-to-br ${action.gradient} border-border/50 hover:border-primary/50 cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-gold group ${action.glow ? 'shadow-[0_0_15px_rgba(250,204,21,0.15)]' : ''}`}
           >
             <div className="flex items-center gap-4">
               <div className={`p-3 rounded-xl bg-background/50 ${action.iconColor} group-hover:scale-110 transition-transform`}>
