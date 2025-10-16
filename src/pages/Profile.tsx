@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -8,11 +8,39 @@ import profileAvatar from "@/assets/profile-avatar.jpg";
 import trophyIcon from "@/assets/trophy-icon.png";
 import badgeIcon from "@/assets/badge-icon.png";
 import { CountryBadge } from "@/components/CountryBadge";
+import { EditProfileModal } from "@/components/EditProfileModal";
 
 const Profile = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const [profileData, setProfileData] = useState({
+    name: "Sami Ali",
+    username: "samiali",
+    jerseyNumber: 10,
+    nationality: "🇦🇿",
+    birthDay: 15,
+    birthMonth: 3,
+    birthYear: 2001,
+    height: "178 cm",
+    favoritePosition: "Forward",
+    level: 12,
+    xp: 8500,
+  });
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  const calculateAge = () => {
+    const today = new Date();
+    const birthDate = new Date(profileData.birthYear, profileData.birthMonth - 1, profileData.birthDay);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
   const topAchievements = [
     { name: "Hat-Trick Hero", tier: "Expert", points: 100 },
     { name: "Assist Master", tier: "Advanced", points: 75 },
@@ -39,42 +67,42 @@ const Profile = () => {
                 <AvatarImage src={profileAvatar} alt="Profile" />
                 <AvatarFallback className="text-3xl">SA</AvatarFallback>
               </Avatar>
-              <Badge className="bg-primary/20 text-primary border-primary/30">Level 12</Badge>
+              <Badge className="bg-primary/20 text-primary border-primary/30">Level {profileData.level}</Badge>
             </div>
 
             {/* Profile Info */}
             <div className="flex-1 space-y-6">
               <div>
-                <h1 className="text-4xl font-bold mb-2">Sami Ali</h1>
+                <h1 className="text-4xl font-bold mb-2">{profileData.name}</h1>
                 <p className="text-muted-foreground italic">"Play with passion, win with pride"</p>
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 <div className="flex items-center gap-2 text-sm">
                   <MapPin className="w-4 h-4 text-primary" />
-                  <span className="text-muted-foreground">Azerbaijan 🇦🇿</span>
+                  <span className="text-muted-foreground">Azerbaijan {profileData.nationality}</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <Calendar className="w-4 h-4 text-primary" />
-                  <span className="text-muted-foreground">24 years old</span>
+                  <span className="text-muted-foreground">{calculateAge()} years old</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <Ruler className="w-4 h-4 text-primary" />
-                  <span className="text-muted-foreground">178 cm</span>
+                  <span className="text-muted-foreground">{profileData.height}</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <Target className="w-4 h-4 text-primary" />
-                  <span className="text-muted-foreground">Jersey #10</span>
+                  <span className="text-muted-foreground">Jersey #{profileData.jerseyNumber}</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <Trophy className="w-4 h-4 text-primary" />
-                  <span className="text-muted-foreground">Forward</span>
+                  <span className="text-muted-foreground">{profileData.favoritePosition}</span>
                 </div>
               </div>
 
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                Edit Profile
-              </Button>
+              <div>
+                <EditProfileModal profileData={profileData} onSave={setProfileData} />
+              </div>
             </div>
           </div>
         </Card>

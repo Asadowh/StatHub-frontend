@@ -3,8 +3,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import profileAvatar from "@/assets/profile-avatar.jpg";
 import portugalFlag from "@/assets/portugal-flag.png";
-import { EditProfileModal } from "./EditProfileModal";
-import { useState } from "react";
 import { findCountryByName, getGradientFromColors } from "@/lib/countryData";
 
 interface ProfileCardProps {
@@ -38,7 +36,7 @@ export const ProfileCard = ({
   maxXp = 1000000,
   avatarUrl,
 }: ProfileCardProps) => {
-  const [profileData, setProfileData] = useState({
+  const profileData = {
     name: initialName,
     username: initialUsername,
     jerseyNumber: initialJerseyNumber,
@@ -50,7 +48,7 @@ export const ProfileCard = ({
     favoritePosition: initialPosition,
     level: initialLevel,
     xp: initialXp,
-  });
+  };
 
   const xpPercentage = (profileData.xp / maxXp) * 100;
 
@@ -74,9 +72,8 @@ export const ProfileCard = ({
   return (
     <Card className="relative overflow-hidden border-2 border-primary/30 p-6 animate-fade-in">
       <div className="relative z-10">
-        {/* Header Icons */}
-        <div className="flex justify-between items-start mb-6">
-          <EditProfileModal profileData={profileData} onSave={setProfileData} />
+        {/* Header Badge */}
+        <div className="flex justify-end items-start mb-6">
           <Badge className="bg-white/10 backdrop-blur-sm text-foreground border-white/20 text-lg px-3 py-1">
             {profileData.nationality} {countryData?.code || ''}
           </Badge>
