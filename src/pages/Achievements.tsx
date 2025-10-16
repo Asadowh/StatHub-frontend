@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -34,6 +34,10 @@ const achievements: Achievement[] = [
 
 const Achievements = () => {
   const [filter, setFilter] = useState<string>("All");
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   
   const tiers = ["All", "Beginner", "Advanced", "Expert"];
   const unlockedCount = achievements.filter(a => a.unlocked).length;

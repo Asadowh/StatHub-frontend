@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +10,10 @@ import { useToast } from "@/hooks/use-toast";
 
 const Settings = () => {
   const { toast } = useToast();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleSave = () => {
     toast({

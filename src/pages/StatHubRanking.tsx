@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -68,6 +68,10 @@ const combinedPlayers: RankingPlayer[] = [
 
 const StatHubRanking = () => {
   const [activeTab, setActiveTab] = useState<"rating" | "goals" | "assists" | "combined">("rating");
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const tabs = [
     { id: "rating" as const, label: "Average StatHub Rating", data: ratingPlayers },

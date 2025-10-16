@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -182,6 +182,10 @@ const upcomingMatchSquads = {
 const Matches = () => {
   const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
   const [showUpcomingSquads, setShowUpcomingSquads] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const getWinner = (match: Match) => {
     if (match.homeScore > match.awayScore) return match.homeTeam;

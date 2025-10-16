@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { ProfileCard } from "@/components/ProfileCard";
 import { StatsGrid } from "@/components/StatsGrid";
 import { MatchRatings } from "@/components/MatchRatings";
@@ -6,6 +7,9 @@ import { NewsFeed } from "@/components/NewsFeed";
 import { Sparkles } from "lucide-react";
 
 const Index = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="min-h-screen bg-background">
       {/* Main Content */}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -51,6 +51,10 @@ const attackerPlayers: TrophyPlayer[] = [
 
 const Trophies = () => {
   const [filter, setFilter] = useState<string>("Global MVP");
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   
   const filters = ["Global MVP", "Goalkeepers", "Defenders", "Midfielders", "Attackers"];
 

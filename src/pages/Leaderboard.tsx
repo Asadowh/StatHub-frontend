@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -32,6 +32,9 @@ const players: Player[] = [
 ];
 
 const Leaderboard = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const getRankColor = (rank: number) => {
     if (rank === 1) return "text-yellow-500";
