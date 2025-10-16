@@ -22,7 +22,7 @@ const StatCard = ({ title, value, icon, gradient = "from-primary/20 to-primary/1
   const bgImage = getBackgroundImage();
 
   return (
-    <Card className="gradient-card border-2 border-primary/20 overflow-hidden hover:border-primary/40 transition-all hover:scale-105 cursor-pointer group relative">
+    <Card className="gradient-card border-2 border-primary/20 overflow-hidden hover:border-primary/30 transition-all duration-300 hover:scale-105 hover:shadow-lg group relative">
       {bgImage && (
         <div className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity">
           <img 
