@@ -12,10 +12,6 @@ import { EditProfileModal } from "@/components/EditProfileModal";
 import { formatHeight } from "@/lib/utils";
 
 const Profile = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   const [profileData, setProfileData] = useState<{
     name: string;
     username: string;
@@ -29,20 +25,34 @@ const Profile = () => {
     level: number;
     xp: number;
     quote?: string;
-  }>({
-    name: "Sami Ali",
-    username: "samiali",
-    jerseyNumber: 10,
-    nationality: "🇦🇿",
-    birthDay: 15,
-    birthMonth: 3,
-    birthYear: 2001,
-    height: "178",
-    favoritePosition: "Forward",
-    level: 12,
-    xp: 8500,
-    quote: "Play with passion, win with pride",
+  }>(() => {
+    const savedProfile = localStorage.getItem('userProfile');
+    if (savedProfile) {
+      return JSON.parse(savedProfile);
+    }
+    return {
+      name: "Sami Ali",
+      username: "samiali",
+      jerseyNumber: 10,
+      nationality: "🇦🇿",
+      birthDay: 15,
+      birthMonth: 3,
+      birthYear: 2001,
+      height: "178",
+      favoritePosition: "Forward",
+      level: 12,
+      xp: 8500,
+      quote: "Play with passion, win with pride",
+    };
   });
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('userProfile', JSON.stringify(profileData));
+  }, [profileData]);
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
