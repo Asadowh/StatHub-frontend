@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { findCountryByName, countryDatabase, type CountryData } from "@/lib/countryData";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Camera } from "lucide-react";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 interface ProfileData {
   name: string;
@@ -20,6 +22,7 @@ interface ProfileData {
   level: number;
   xp: number;
   quote?: string;
+  profilePhoto?: string;
 }
 
 interface EditProfileModalProps {
@@ -80,6 +83,17 @@ export const EditProfileModal = ({ profileData, onSave }: EditProfileModalProps)
     return true;
   };
 
+  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData({ ...formData, profilePhoto: reader.result as string });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSave = () => {
     if (heightError) {
       return;
@@ -101,6 +115,34 @@ export const EditProfileModal = ({ profileData, onSave }: EditProfileModalProps)
         </DialogHeader>
         <ScrollArea className="max-h-[60vh] pr-4">
         <div className="grid gap-4 py-4">
+          <div className="grid gap-2">
+            <Label>Profile Photo</Label>
+            <div className="flex items-center gap-4">
+              <Avatar className="w-20 h-20 border-2 border-primary/30">
+                <AvatarImage src={formData.profilePhoto} alt="Profile" />
+                <AvatarFallback className="text-xl">{formData.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+              </Avatar>
+              <div>
+                <input
+                  type="file"
+                  id="photo-upload"
+                  accept="image/*"
+                  onChange={handlePhotoUpload}
+                  className="hidden"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => document.getElementById('photo-upload')?.click()}
+                  className="gap-2"
+                >
+                  <Camera className="w-4 h-4" />
+                  {formData.profilePhoto ? 'Change Photo' : 'Upload Photo'}
+                </Button>
+                <p className="text-xs text-muted-foreground mt-1">JPG, PNG or WEBP (max 5MB)</p>
+              </div>
+            </div>
+          </div>
           <div className="grid gap-2">
             <Label htmlFor="name">Full Name</Label>
             <Input

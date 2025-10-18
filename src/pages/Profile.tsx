@@ -25,6 +25,7 @@ const Profile = () => {
     level: number;
     xp: number;
     quote?: string;
+    profilePhoto?: string;
   }>(() => {
     const savedProfile = localStorage.getItem('userProfile');
     if (savedProfile) {
@@ -89,8 +90,8 @@ const Profile = () => {
             {/* Avatar Section */}
             <div className="flex flex-col items-center gap-4">
               <Avatar className="w-32 h-32 border-4 border-primary/30">
-                <AvatarImage src={profileAvatar} alt="Profile" />
-                <AvatarFallback className="text-3xl">SA</AvatarFallback>
+                <AvatarImage src={profileData.profilePhoto || profileAvatar} alt="Profile" />
+                <AvatarFallback className="text-3xl">{profileData.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
               </Avatar>
               <Badge className="bg-primary/20 text-primary border-primary/30">Level {profileData.level}</Badge>
             </div>
