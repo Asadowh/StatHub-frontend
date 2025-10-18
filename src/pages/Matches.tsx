@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Trophy, Calendar } from "lucide-react";
+import { Trophy, Calendar, Loader2 } from "lucide-react";
 import { MatchDetailDialog } from "@/components/MatchDetailDialog";
 
 interface Player {
@@ -148,6 +148,10 @@ const matches: Match[] = [
   { id: 6, homeTeam: "Yellow Wolves", awayTeam: "Blue Tigers", homeScore: 0, awayScore: 2, date: "April 23, 2025", rating: 7.2, competition: "League", playerGoals: 2, playerRating: 7.5, homePlayers: [], awayPlayers: [] },
   { id: 7, homeTeam: "White Sharks", awayTeam: "Purple Lions", homeScore: 3, awayScore: 3, date: "April 19, 2025", rating: 8.5, competition: "League", playerGoals: 1, playerRating: 6.5, homePlayers: [], awayPlayers: [] },
   { id: 8, homeTeam: "Orange Phoenixes", awayTeam: "Black Panthers", homeScore: 1, awayScore: 2, date: "April 15, 2025", rating: 7.9, competition: "League", playerGoals: 2, playerRating: 8.8, homePlayers: [], awayPlayers: [] },
+  { id: 9, homeTeam: "Blue Tigers", awayTeam: "Green Eagles", homeScore: 1, awayScore: 4, date: "April 11, 2025", rating: 6.5, competition: "League", playerGoals: 1, playerRating: 6.0, homePlayers: [], awayPlayers: [] },
+  { id: 10, homeTeam: "Red Dragons", awayTeam: "Yellow Wolves", homeScore: 2, awayScore: 0, date: "April 7, 2025", rating: 8.1, competition: "League", playerGoals: 0, playerRating: 7.3, homePlayers: [], awayPlayers: [] },
+  { id: 11, homeTeam: "Black Panthers", awayTeam: "Orange Phoenixes", homeScore: 3, awayScore: 2, date: "April 3, 2025", rating: 8.7, competition: "League", playerGoals: 2, playerRating: 8.9, homePlayers: [], awayPlayers: [] },
+  { id: 12, homeTeam: "Purple Lions", awayTeam: "White Sharks", homeScore: 1, awayScore: 1, date: "March 30, 2025", rating: 7.0, competition: "League", playerGoals: 0, playerRating: 6.8, homePlayers: [], awayPlayers: [] },
 ];
 
 const upcomingMatchSquads = {
@@ -179,13 +183,28 @@ const upcomingMatchSquads = {
   ],
 };
 
+const ITEMS_PER_PAGE = 6;
+
 const Matches = () => {
   const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
   const [showUpcomingSquads, setShowUpcomingSquads] = useState(false);
+  const [displayedCount, setDisplayedCount] = useState(ITEMS_PER_PAGE);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const displayedMatches = matches.slice(0, displayedCount);
+  const hasMore = displayedCount < matches.length;
+
+  const loadMore = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setDisplayedCount(prev => Math.min(prev + ITEMS_PER_PAGE, matches.length));
+      setIsLoading(false);
+    }, 500);
+  };
 
   const getWinner = (match: Match) => {
     if (match.homeScore > match.awayScore) return match.homeTeam;
@@ -271,7 +290,7 @@ const Matches = () => {
 
         {/* Matches List */}
         <div className="space-y-4">
-          {matches.map((match) => {
+          {displayedMatches.map((match) => {
             const winner = getWinner(match);
             return (
               <Card
@@ -328,12 +347,30 @@ const Matches = () => {
           })}
         </div>
 
-        {/* Load More */}
-        <div className="text-center">
-          <Button variant="outline" className="border-primary/30 text-primary hover:bg-primary/10">
-            Load More Matches
-          </Button>
-        </div>
+        {/* Load More / End Message */}
+        {hasMore ? (
+          <div className="text-center">
+            <Button 
+              onClick={loadMore}
+              disabled={isLoading}
+              variant="outline"
+              className="border-primary/30 hover:border-primary/50 hover:bg-primary/10"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Loading more...
+                </>
+              ) : (
+                `Load More Matches (${matches.length - displayedCount} remaining)`
+              )}
+            </Button>
+          </div>
+        ) : (
+          <div className="text-center">
+            <p className="text-sm text-muted-foreground">End of list reached</p>
+          </div>
+        )}
       </div>
     </div>
   );

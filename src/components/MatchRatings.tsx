@@ -1,5 +1,7 @@
 import { Card } from "@/components/ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { TrendingUp, TrendingDown, Minus } from "lucide-react";
+import defaultAvatar from "@/assets/default-avatar.png";
 
 interface Match {
   id: number;
@@ -11,12 +13,13 @@ interface Match {
   rating: number;
   playerPlayed: boolean;
   playerResult: "W" | "L" | "D";
+  avatar?: string;
 }
 
 const recentMatches: Match[] = [
-  { id: 1, homeTeam: "Blue Tigers", awayTeam: "Red Dragons", homeScore: 3, awayScore: 1, date: "May 12", rating: 8.5, playerPlayed: true, playerResult: "W" },
-  { id: 2, homeTeam: "Green Eagles", awayTeam: "Yellow Wolves", homeScore: 2, awayScore: 2, date: "May 9", rating: 7.2, playerPlayed: true, playerResult: "D" },
-  { id: 3, homeTeam: "Black Panthers", awayTeam: "White Sharks", homeScore: 4, awayScore: 0, date: "May 5", rating: 9.1, playerPlayed: true, playerResult: "W" },
+  { id: 1, homeTeam: "Blue Tigers", awayTeam: "Red Dragons", homeScore: 3, awayScore: 1, date: "May 12", rating: 8.5, playerPlayed: true, playerResult: "W", avatar: defaultAvatar },
+  { id: 2, homeTeam: "Green Eagles", awayTeam: "Yellow Wolves", homeScore: 2, awayScore: 2, date: "May 9", rating: 7.2, playerPlayed: true, playerResult: "D", avatar: defaultAvatar },
+  { id: 3, homeTeam: "Black Panthers", awayTeam: "White Sharks", homeScore: 4, awayScore: 0, date: "May 5", rating: 9.1, playerPlayed: true, playerResult: "W", avatar: defaultAvatar },
 ];
 
 const getTrendIcon = (rating: number) => {
@@ -62,23 +65,29 @@ export const MatchRatings = () => {
               <div className="space-y-3">
                 {/* Match Header */}
                 <div className="flex items-start justify-between">
-                  <p className="font-semibold text-foreground group-hover:text-primary transition-colors">
-                    <span className={winner === match.homeTeam ? "text-primary" : ""}>
-                      {match.homeTeam}
-                    </span>
-                    {" "}
-                    <span className={winner === match.homeTeam ? "text-primary" : "text-muted-foreground"}>
-                      {match.homeScore}
-                    </span>
-                    {" - "}
-                    <span className={winner === match.awayTeam ? "text-primary" : "text-muted-foreground"}>
-                      {match.awayScore}
-                    </span>
-                    {" "}
-                    <span className={winner === match.awayTeam ? "text-primary" : ""}>
-                      {match.awayTeam}
-                    </span>
-                  </p>
+                  <div className="flex items-center gap-3">
+                    <Avatar className="w-10 h-10 border-2 border-border">
+                      <AvatarImage src={match.avatar} alt="Player" />
+                      <AvatarFallback className="bg-muted text-xs">SA</AvatarFallback>
+                    </Avatar>
+                    <p className="font-semibold text-foreground group-hover:text-primary transition-colors">
+                      <span className={winner === match.homeTeam ? "text-primary" : ""}>
+                        {match.homeTeam}
+                      </span>
+                      {" "}
+                      <span className={winner === match.homeTeam ? "text-primary" : "text-muted-foreground"}>
+                        {match.homeScore}
+                      </span>
+                      {" - "}
+                      <span className={winner === match.awayTeam ? "text-primary" : "text-muted-foreground"}>
+                        {match.awayScore}
+                      </span>
+                      {" "}
+                      <span className={winner === match.awayTeam ? "text-primary" : ""}>
+                        {match.awayTeam}
+                      </span>
+                    </p>
+                  </div>
                   <span className={`text-lg font-bold ${getResultColor(match.playerResult)}`}>
                     {match.playerResult}
                   </span>

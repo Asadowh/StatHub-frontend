@@ -5,7 +5,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Heart, MessageCircle, Laugh, ArrowLeft, Send, Flame, ThumbsUp } from "lucide-react";
+import { Heart, MessageCircle, Laugh, ArrowLeft, Send, Flame, ThumbsUp, Loader2 } from "lucide-react";
 import concertPic from "@/assets/concert-pic.jpg";
 import ronaldoAvatar from "@/assets/ronaldo-avatar.png";
 
@@ -144,12 +144,16 @@ const newsPosts: NewsPost[] = [
   },
 ];
 
+const ITEMS_PER_PAGE = 4;
+
 const News = () => {
   const location = useLocation();
   const [selectedPost, setSelectedPost] = useState<NewsPost | null>(null);
   const [commentText, setCommentText] = useState("");
   const [localPosts, setLocalPosts] = useState(newsPosts);
   const [reactions, setReactions] = useState<{ [key: number]: { liked: boolean; laughed: boolean; fired: boolean } }>({});
+  const [displayedCount, setDisplayedCount] = useState(ITEMS_PER_PAGE);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (location.state && (location.state as any).postId) {
@@ -162,6 +166,17 @@ const News = () => {
     // Always scroll to top when navigating to News page
     window.scrollTo(0, 0);
   }, [location]);
+
+  const displayedPosts = localPosts.slice(0, displayedCount);
+  const hasMore = displayedCount < localPosts.length;
+
+  const loadMore = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setDisplayedCount(prev => Math.min(prev + ITEMS_PER_PAGE, localPosts.length));
+      setIsLoading(false);
+    }, 500);
+  };
 
   const getCategoryColor = (category: string) => {
     switch(category) {
@@ -407,7 +422,7 @@ const News = () => {
 
         {/* News Feed */}
         <div className="space-y-6">
-          {localPosts.map((post) => (
+          {displayedPosts.map((post) => (
             <Card
               key={post.id}
               onClick={() => handlePostClick(post)}
@@ -474,6 +489,31 @@ const News = () => {
             </Card>
           ))}
         </div>
+
+        {/* Load More / End Message */}
+        {hasMore ? (
+          <div className="text-center">
+            <Button 
+              onClick={loadMore}
+              disabled={isLoading}
+              variant="outline"
+              className="border-primary/30 hover:border-primary/50 hover:bg-primary/10"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Loading more...
+                </>
+              ) : (
+                `Load More Posts (${localPosts.length - displayedCount} remaining)`
+              )}
+            </Button>
+          </div>
+        ) : (
+          <div className="text-center">
+            <p className="text-sm text-muted-foreground">End of list reached</p>
+          </div>
+        )}
       </div>
     </div>
   );
