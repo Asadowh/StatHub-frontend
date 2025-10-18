@@ -3,7 +3,9 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Trophy, Medal, MapPin, Ruler, Calendar, Target } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Trophy, Medal, MapPin, Ruler, Calendar, Target, Info } from "lucide-react";
 import profileAvatar from "@/assets/profile-avatar.jpg";
 import trophyIcon from "@/assets/trophy-icon.png";
 import badgeIcon from "@/assets/badge-icon.png";
@@ -26,6 +28,7 @@ const Profile = () => {
     xp: number;
     quote?: string;
     profilePhoto?: string;
+    joinDate?: string;
   }>(() => {
     const savedProfile = localStorage.getItem('userProfile');
     if (savedProfile) {
@@ -44,6 +47,7 @@ const Profile = () => {
       level: 12,
       xp: 8500,
       quote: "Play with passion, win with pride",
+      joinDate: "January 2024",
     };
   });
 
@@ -67,6 +71,10 @@ const Profile = () => {
     }
     return age;
   };
+
+  // XP Progress Calculation
+  const xpForNextLevel = profileData.level * 1000;
+  const xpProgress = (profileData.xp / xpForNextLevel) * 100;
   const topAchievements = [
     { name: "Hat-Trick Hero", tier: "Expert", points: 100 },
     { name: "Assist Master", tier: "Advanced", points: 75 },
@@ -93,7 +101,26 @@ const Profile = () => {
                 <AvatarImage src={profileData.profilePhoto || profileAvatar} alt="Profile" />
                 <AvatarFallback className="text-3xl">{profileData.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
               </Avatar>
-              <Badge className="bg-primary/20 text-primary border-primary/30">Level {profileData.level}</Badge>
+              <div className="text-center space-y-2">
+                <Badge className="bg-primary/20 text-primary border-primary/30">Level {profileData.level}</Badge>
+                
+                {/* Level Progress Bar */}
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="w-32 space-y-1 cursor-help">
+                        <Progress value={xpProgress} className="h-2" />
+                        <p className="text-xs text-muted-foreground flex items-center justify-center gap-1">
+                          <span>{profileData.xp} / {xpForNextLevel} XP</span>
+                        </p>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{profileData.xp} / {xpForNextLevel} XP to level {profileData.level + 1}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
             </div>
 
             {/* Profile Info */}
@@ -132,6 +159,10 @@ const Profile = () => {
                 <div className="flex items-center gap-2 text-sm">
                   <Trophy className="w-4 h-4 text-primary" />
                   <span className="text-muted-foreground">{profileData.favoritePosition}</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <Calendar className="w-4 h-4 text-primary" />
+                  <span className="text-muted-foreground">Joined: {profileData.joinDate || "January 2024"}</span>
                 </div>
               </div>
 

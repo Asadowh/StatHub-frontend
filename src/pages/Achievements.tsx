@@ -4,6 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Medal, Trophy, Target, Users, Lock } from "lucide-react";
+import confetti from "canvas-confetti";
+import { useToast } from "@/hooks/use-toast";
 
 interface Achievement {
   id: number;
@@ -34,10 +36,50 @@ const achievements: Achievement[] = [
 
 const Achievements = () => {
   const [filter, setFilter] = useState<string>("All");
+  const { toast } = useToast();
   
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const triggerAchievementUnlock = (achievement: Achievement) => {
+    // Confetti animation
+    const duration = 1000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
+
+    const randomInRange = (min: number, max: number) => {
+      return Math.random() * (max - min) + min;
+    };
+
+    const interval: NodeJS.Timeout = setInterval(() => {
+      const timeLeft = animationEnd - Date.now();
+
+      if (timeLeft <= 0) {
+        return clearInterval(interval);
+      }
+
+      const particleCount = 50 * (timeLeft / duration);
+      
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+      });
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+      });
+    }, 250);
+
+    // Toast notification
+    toast({
+      title: "🏅 Achievement Unlocked!",
+      description: `${achievement.title} - ${achievement.description}`,
+      duration: 3000,
+    });
+  };
   
   const tiers = ["All", "Beginner", "Advanced", "Expert"];
   const unlockedCount = achievements.filter(a => a.unlocked).length;
@@ -100,9 +142,10 @@ const Achievements = () => {
               key={achievement.id}
               className={`p-6 transition-all duration-300 ${
                 achievement.unlocked
-                  ? "bg-gradient-to-br from-primary/10 to-card border-primary/30 shadow-gold"
+                  ? "bg-gradient-to-br from-primary/10 to-card border-primary/30 shadow-gold cursor-pointer hover:scale-105"
                   : "bg-gradient-to-br from-card to-card/50 border-border/50 opacity-75"
-              } hover:scale-105`}
+              }`}
+              onClick={() => achievement.unlocked && triggerAchievementUnlock(achievement)}
             >
               <div className="space-y-4">
                 {/* Icon & Title */}
@@ -123,6 +166,9 @@ const Achievements = () => {
                 <div>
                   <h3 className="font-bold text-lg mb-1">{achievement.title}</h3>
                   <p className="text-sm text-muted-foreground">{achievement.description}</p>
+                  {achievement.unlocked && (
+                    <p className="text-xs text-primary/60 mt-1 italic">Click to celebrate again! 🎉</p>
+                  )}
                 </div>
 
                 {/* Progress Bar (if applicable) */}
