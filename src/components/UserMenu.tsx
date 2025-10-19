@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import profileAvatar from "@/assets/profile-avatar.jpg";
+import profileAvatar from "@/assets/profile-avatar.png";
 
 export const UserMenu = () => {
   const navigate = useNavigate();

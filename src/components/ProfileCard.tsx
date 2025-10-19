@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import profileAvatar from "@/assets/profile-avatar.jpg";
+import profileAvatar from "@/assets/profile-avatar.png";
 import portugalFlag from "@/assets/portugal-flag.png";
 import { findCountryByName, getGradientFromColors } from "@/lib/countryData";
 

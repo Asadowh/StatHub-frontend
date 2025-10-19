@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Trophy, Medal, MapPin, Ruler, Calendar, Target, Info } from "lucide-react";
-import profileAvatar from "@/assets/profile-avatar.jpg";
+import profileAvatar from "@/assets/profile-avatar.png";
 import trophyIcon from "@/assets/trophy-icon.png";
 import badgeIcon from "@/assets/badge-icon.png";
 import { CountryBadge } from "@/components/CountryBadge";
