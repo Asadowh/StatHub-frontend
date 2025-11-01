@@ -1,5 +1,7 @@
 import { Settings, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,6 +15,17 @@ import profileAvatar from "@/assets/profile-avatar.png";
 
 export const UserMenu = () => {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
+  const { toast } = useToast();
+
+  const handleLogout = () => {
+    logout();
+    toast({
+      title: "Logged out",
+      description: "You have been logged out successfully.",
+    });
+    navigate("/login");
+  };
 
   return (
     <DropdownMenu>
@@ -25,8 +38,8 @@ export const UserMenu = () => {
       <DropdownMenuContent align="end" className="w-56 bg-card border-border">
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">Sami Ali</p>
-            <p className="text-xs leading-none text-muted-foreground">Forward • Level 12</p>
+            <p className="text-sm font-medium leading-none">{user?.username || 'Guest'}</p>
+            <p className="text-xs leading-none text-muted-foreground">{user?.email || 'Not logged in'}</p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-border" />
@@ -39,6 +52,7 @@ export const UserMenu = () => {
         </DropdownMenuItem>
         <DropdownMenuSeparator className="bg-border" />
         <DropdownMenuItem 
+          onClick={handleLogout}
           className="cursor-pointer hover:bg-secondary focus:bg-secondary text-destructive focus:text-destructive"
         >
           <LogOut className="mr-2 h-4 w-4" />

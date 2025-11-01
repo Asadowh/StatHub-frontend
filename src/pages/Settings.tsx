@@ -10,6 +10,8 @@ import { formatHeight } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 import {
   Form,
   FormControl,
@@ -36,6 +38,8 @@ const passwordSchema = z.object({
 
 const Settings = () => {
   const { toast } = useToast();
+  const { user, logout, changePassword } = useAuth();
+  const navigate = useNavigate();
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const [emailVerified, setEmailVerified] = useState(true);
@@ -54,15 +58,13 @@ const Settings = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const onSubmitPasswordChange = (values: z.infer<typeof passwordSchema>) => {
-    // Simulate password change - in real app, this would call an API
-    // Check if current password is "correct" (for demo purposes)
-    const isCurrentPasswordCorrect = values.currentPassword === "demo"; // Demo validation
+  const onSubmitPasswordChange = async (values: z.infer<typeof passwordSchema>) => {
+    const result = await changePassword(values.currentPassword, values.newPassword);
     
-    if (!isCurrentPasswordCorrect) {
+    if (!result.success) {
       toast({
         title: "❌ Error",
-        description: "Incorrect current password. Please try again.",
+        description: result.error || "Failed to change password",
         variant: "destructive",
         duration: 4000,
       });
@@ -84,11 +86,12 @@ const Settings = () => {
   };
 
   const handleLogout = () => {
+    logout();
     toast({
       title: "Logged out",
       description: "You have been logged out successfully.",
-      variant: "destructive",
     });
+    navigate("/login");
   };
 
   const handleToggle2FA = () => {
@@ -142,16 +145,16 @@ const Settings = () => {
 
           <div className="space-y-4">
             <div className="grid gap-2">
-              <Label>Full Name</Label>
+              <Label>Email</Label>
               <div className="px-3 py-2 bg-background border border-border rounded-md text-foreground cursor-default">
-                Sami Ali
+                {user?.email || 'Not set'}
               </div>
             </div>
 
             <div className="grid gap-2">
               <Label>Username</Label>
               <div className="px-3 py-2 bg-background border border-border rounded-md text-foreground cursor-default">
-                @samiali
+                @{user?.username || 'Not set'}
               </div>
             </div>
 
