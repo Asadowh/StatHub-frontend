@@ -4,12 +4,17 @@ import { StatsGrid } from "@/components/StatsGrid";
 import { MatchRatings } from "@/components/MatchRatings";
 import { QuickActions } from "@/components/QuickActions";
 import { NewsFeed } from "@/components/NewsFeed";
+import { PlayerSearch } from "@/components/PlayerSearch";
+import { useAuth } from "@/contexts/AuthContext";
 import { Sparkles } from "lucide-react";
 
 const Index = () => {
+  const { user } = useAuth();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  
   return (
     <div className="min-h-screen bg-background">
       {/* Main Content */}
@@ -19,9 +24,14 @@ const Index = () => {
           <div className="flex items-center gap-3 animate-fade-in">
             <Sparkles className="w-6 h-6 text-primary" />
             <div>
-              <h2 className="text-2xl font-bold">Welcome back, Sami!</h2>
+              <h2 className="text-2xl font-bold">Welcome back, {user?.username || 'Player'}!</h2>
               <p className="text-sm text-muted-foreground">Ready to dominate the field today?</p>
             </div>
+          </div>
+
+          {/* Player Search */}
+          <div className="animate-fade-in">
+            <PlayerSearch />
           </div>
 
           {/* Profile Section */}
