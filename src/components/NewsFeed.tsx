@@ -75,7 +75,7 @@ export const NewsFeed = () => {
     {
       newsId: 4,
       title: "Concert Night Success 🎸",
-      description: "Got a girl's number at the concert last night! Who says football players can't have game? The boys are calling me the 'Concert Casanova' now.",
+      description: "Qaqam qiza shaggaladi!",
       timestamp: "2 hours ago",
       likes: 67,
       comments: 23,
