@@ -47,7 +47,7 @@ const Signup = () => {
         country.code.toLowerCase().includes(searchTerm)
       );
       setFilteredCountries(matches);
-      setShowSuggestions(matches.length > 0);
+      setShowSuggestions(matches.length > 0 && value.trim().length > 0);
     } else {
       setFilteredCountries([]);
       setShowSuggestions(false);
@@ -197,7 +197,7 @@ const Signup = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-          <div className="max-h-[70vh] overflow-y-auto pr-4">
+          <div className="max-h-[70vh] overflow-y-auto pr-4 relative">
             <div className="space-y-4 pb-4">
               {/* Profile Photo */}
               <div className="grid gap-2">
@@ -380,40 +380,49 @@ const Signup = () => {
               </div>
 
               {/* Nationality */}
-              <div className="space-y-2 relative">
+              <div className="space-y-2 relative z-10">
                 <Label htmlFor="nationality">Nationality *</Label>
                 <Input
                   id="nationality"
                   placeholder="Type country name (e.g., Azerbaijan, Turkey)"
                   value={nationalityInput}
                   onChange={(e) => handleNationalityChange(e.target.value)}
-                  onFocus={() => nationalityInput && setShowSuggestions(true)}
+                  onFocus={() => {
+                    if (nationalityInput.trim().length > 0 && filteredCountries.length > 0) {
+                      setShowSuggestions(true);
+                    }
+                  }}
+                  onBlur={(e) => {
+                    // Delay hiding to allow click on suggestion
+                    setTimeout(() => setShowSuggestions(false), 200);
+                  }}
                   className="bg-background border-border"
                   autoComplete="off"
                   required
                 />
                 {showSuggestions && filteredCountries.length > 0 && (
-                  <div className="absolute top-full left-0 right-0 mt-1 bg-card border border-primary/30 rounded-lg shadow-lg z-50 max-h-48 overflow-hidden">
-                    <ScrollArea className="h-full">
-                      {filteredCountries.map((country) => (
-                        <button
-                          key={country.code}
-                          type="button"
-                          onClick={() => selectCountry(country)}
-                          className="w-full px-4 py-2 text-left hover:bg-accent/20 transition-colors flex items-center gap-3 border-b border-border/50 last:border-0"
-                        >
-                          <span className="text-2xl">{country.flag}</span>
-                          <div className="flex-1">
-                            <span className="text-foreground font-medium">{country.name}</span>
-                            <span className="text-muted-foreground text-sm ml-2">({country.code})</span>
-                          </div>
-                        </button>
-                      ))}
-                    </ScrollArea>
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-card border border-primary/30 rounded-lg shadow-lg z-[9999] max-h-48 overflow-y-auto">
+                    {filteredCountries.map((country) => (
+                      <button
+                        key={country.code}
+                        type="button"
+                        onMouseDown={(e) => {
+                          e.preventDefault(); // Prevent input blur
+                          selectCountry(country);
+                        }}
+                        className="w-full px-4 py-2 text-left hover:bg-accent/20 transition-colors flex items-center gap-3 border-b border-border/50 last:border-0 bg-card"
+                      >
+                        <span className="text-2xl">{country.flag}</span>
+                        <div className="flex-1">
+                          <span className="text-foreground font-medium">{country.name}</span>
+                          <span className="text-muted-foreground text-sm ml-2">({country.code})</span>
+                        </div>
+                      </button>
+                    ))}
                   </div>
                 )}
                 {nationalityFlag && (
-                  <div className="text-sm text-muted-foreground flex items-center gap-2">
+                  <div className="text-sm text-muted-foreground flex items-center gap-2 mt-2">
                     <span>Selected:</span>
                     <span className="text-2xl">{nationalityFlag}</span>
                     <span>{nationality}</span>
