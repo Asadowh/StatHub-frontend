@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { LogIn, Mail, Lock, ArrowLeft } from 'lucide-react';
+import { LogIn, Mail, Lock } from 'lucide-react';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -52,10 +52,6 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-secondary/20 p-4">
       <Card className="w-full max-w-md p-8 bg-card border-border/50">
         <div className="mb-8">
-          <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
-            <ArrowLeft className="w-4 h-4" />
-            Back to home
-          </Link>
           <div className="flex items-center gap-3 mb-2">
             <LogIn className="w-8 h-8 text-primary" />
             <h1 className="text-3xl font-bold">Welcome back</h1>

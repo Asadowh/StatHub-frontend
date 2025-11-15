@@ -11,6 +11,7 @@ interface Player {
   position: string;
   rating: number;
   nationality: string;
+  goals?: number;
 }
 
 interface Match {
@@ -41,30 +42,30 @@ const matches: Match[] = [
     playerGoals: 2, 
     playerRating: 8.5,
     homePlayers: [
-      { rank: 1, name: "Marcus Silva", position: "Forward", rating: 9.2, nationality: "🇧🇷" },
-      { rank: 2, name: "John Smith", position: "Midfielder", rating: 8.5, nationality: "🇬🇧" },
-      { rank: 3, name: "Ahmed Hassan", position: "Defender", rating: 8.1, nationality: "🇪🇬" },
-      { rank: 4, name: "Carlos Rodriguez", position: "Midfielder", rating: 7.8, nationality: "🇪🇸" },
-      { rank: 5, name: "Peter Müller", position: "Defender", rating: 7.5, nationality: "🇩🇪" },
-      { rank: 6, name: "Yuki Tanaka", position: "Goalkeeper", rating: 7.3, nationality: "🇯🇵" },
-      { rank: 7, name: "Ivan Petrov", position: "Defender", rating: 7.0, nationality: "🇷🇺" },
-      { rank: 8, name: "Luis Hernandez", position: "Forward", rating: 6.8, nationality: "🇲🇽" },
-      { rank: 9, name: "Paolo Rossi", position: "Midfielder", rating: 6.5, nationality: "🇮🇹" },
-      { rank: 10, name: "Andre Mbemba", position: "Defender", rating: 6.2, nationality: "🇨🇲" },
-      { rank: 11, name: "Pierre Dubois", position: "Midfielder", rating: 6.0, nationality: "🇫🇷" },
+      { rank: 1, name: "Marcus Silva", position: "Forward", rating: 9.2, nationality: "🇧🇷", goals: 2 },
+      { rank: 2, name: "John Smith", position: "Midfielder", rating: 8.5, nationality: "🇬🇧", goals: 1 },
+      { rank: 3, name: "Ahmed Hassan", position: "Defender", rating: 8.1, nationality: "🇪🇬", goals: 0 },
+      { rank: 4, name: "Carlos Rodriguez", position: "Midfielder", rating: 7.8, nationality: "🇪🇸", goals: 0 },
+      { rank: 5, name: "Peter Müller", position: "Defender", rating: 7.5, nationality: "🇩🇪", goals: 0 },
+      { rank: 6, name: "Yuki Tanaka", position: "Goalkeeper", rating: 7.3, nationality: "🇯🇵", goals: 0 },
+      { rank: 7, name: "Ivan Petrov", position: "Defender", rating: 7.0, nationality: "🇷🇺", goals: 0 },
+      { rank: 8, name: "Luis Hernandez", position: "Forward", rating: 6.8, nationality: "🇲🇽", goals: 0 },
+      { rank: 9, name: "Paolo Rossi", position: "Midfielder", rating: 6.5, nationality: "🇮🇹", goals: 0 },
+      { rank: 10, name: "Andre Mbemba", position: "Defender", rating: 6.2, nationality: "🇨🇲", goals: 0 },
+      { rank: 11, name: "Pierre Dubois", position: "Midfielder", rating: 6.0, nationality: "🇫🇷", goals: 0 },
     ],
     awayPlayers: [
-      { rank: 1, name: "Li Wei", position: "Midfielder", rating: 8.0, nationality: "🇨🇳" },
-      { rank: 2, name: "David Chen", position: "Forward", rating: 7.8, nationality: "🇹🇼" },
-      { rank: 3, name: "Kim Min-jae", position: "Defender", rating: 7.5, nationality: "🇰🇷" },
-      { rank: 4, name: "Nguyen Van", position: "Midfielder", rating: 7.2, nationality: "🇻🇳" },
-      { rank: 5, name: "Takumi Sato", position: "Forward", rating: 7.0, nationality: "🇯🇵" },
-      { rank: 6, name: "Raj Patel", position: "Defender", rating: 6.8, nationality: "🇮🇳" },
-      { rank: 7, name: "Ali Khan", position: "Midfielder", rating: 6.5, nationality: "🇵🇰" },
-      { rank: 8, name: "Kenji Yamamoto", position: "Goalkeeper", rating: 6.3, nationality: "🇯🇵" },
-      { rank: 9, name: "Wang Lei", position: "Defender", rating: 6.0, nationality: "🇨🇳" },
-      { rank: 10, name: "Park Ji-sung", position: "Midfielder", rating: 5.8, nationality: "🇰🇷" },
-      { rank: 11, name: "Chen Yu", position: "Forward", rating: 5.5, nationality: "🇨🇳" },
+      { rank: 1, name: "Li Wei", position: "Midfielder", rating: 8.0, nationality: "🇨🇳", goals: 1 },
+      { rank: 2, name: "David Chen", position: "Forward", rating: 7.8, nationality: "🇹🇼", goals: 0 },
+      { rank: 3, name: "Kim Min-jae", position: "Defender", rating: 7.5, nationality: "🇰🇷", goals: 0 },
+      { rank: 4, name: "Nguyen Van", position: "Midfielder", rating: 7.2, nationality: "🇻🇳", goals: 0 },
+      { rank: 5, name: "Takumi Sato", position: "Forward", rating: 7.0, nationality: "🇯🇵", goals: 0 },
+      { rank: 6, name: "Raj Patel", position: "Defender", rating: 6.8, nationality: "🇮🇳", goals: 0 },
+      { rank: 7, name: "Ali Khan", position: "Midfielder", rating: 6.5, nationality: "🇵🇰", goals: 0 },
+      { rank: 8, name: "Kenji Yamamoto", position: "Goalkeeper", rating: 6.3, nationality: "🇯🇵", goals: 0 },
+      { rank: 9, name: "Wang Lei", position: "Defender", rating: 6.0, nationality: "🇨🇳", goals: 0 },
+      { rank: 10, name: "Park Ji-sung", position: "Midfielder", rating: 5.8, nationality: "🇰🇷", goals: 0 },
+      { rank: 11, name: "Chen Yu", position: "Forward", rating: 5.5, nationality: "🇨🇳", goals: 0 },
     ]
   },
   { 
@@ -255,31 +256,43 @@ const Matches = () => {
         </div>
 
         {/* Next Match Announcement */}
-        <Card 
-          className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-card to-card border-primary/30 shadow-gold cursor-pointer hover:border-primary/50 transition-all duration-300"
-          onClick={() => setShowUpcomingSquads(true)}
-        >
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=2070')] bg-cover bg-center opacity-10" />
-          <div className="relative p-8">
-            <h2 className="text-2xl font-bold text-primary mb-6">Next Game Announcement</h2>
-            <div className="space-y-4">
-              <div className="flex items-center justify-center gap-4 text-3xl font-bold">
-                <span>Turan-Tovuz FK</span>
-                <span className="text-muted-foreground">vs</span>
-                <span>Neftçi Baku</span>
-              </div>
-              <div className="flex flex-col md:flex-row items-center justify-center gap-4 text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-5 h-5" />
-                  <span>May 18, 2025 • 19:00</span>
+        {false ? ( // Set to true when there's an upcoming match
+          <Card 
+            className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-card to-card border-primary/30 shadow-gold cursor-pointer hover:border-primary/50 transition-all duration-300"
+            onClick={() => setShowUpcomingSquads(true)}
+          >
+            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=2070')] bg-cover bg-center opacity-10" />
+            <div className="relative p-8">
+              <h2 className="text-2xl font-bold text-primary mb-6">Next Game Announcement</h2>
+              <div className="space-y-4">
+                <div className="flex items-center justify-center gap-4 text-3xl font-bold">
+                  <span>Turan-Tovuz FK</span>
+                  <span className="text-muted-foreground">vs</span>
+                  <span>Neftçi Baku</span>
                 </div>
-                <span className="hidden md:block">•</span>
-                <span>Tovuz City Stadium</span>
+                <div className="flex flex-col md:flex-row items-center justify-center gap-4 text-muted-foreground">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-5 h-5" />
+                    <span>May 18, 2025 • 19:00</span>
+                  </div>
+                  <span className="hidden md:block">•</span>
+                  <span>Tovuz City Stadium</span>
+                </div>
+                <p className="text-center text-primary font-semibold text-lg">Kickoff in 2 days</p>
               </div>
-              <p className="text-center text-primary font-semibold text-lg">Kickoff in 2 days</p>
             </div>
-          </div>
-        </Card>
+          </Card>
+        ) : (
+          <Card className="relative overflow-hidden bg-gradient-to-br from-card to-card/50 border-border/50">
+            <div className="p-12 text-center">
+              <div className="w-32 h-32 mx-auto mb-6 bg-gradient-to-br from-primary/10 to-primary/5 rounded-full flex items-center justify-center">
+                <Trophy className="w-16 h-16 text-primary/50" />
+              </div>
+              <h2 className="text-2xl font-bold mb-2">No future games scheduled yet.</h2>
+              <p className="text-muted-foreground">Check back later for upcoming match announcements.</p>
+            </div>
+          </Card>
+        )}
 
         {/* Filters */}
         <div className="flex gap-2 flex-wrap justify-center md:justify-start">

@@ -6,23 +6,99 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { UserPlus, Mail, Lock, User, ArrowLeft } from 'lucide-react';
+import { UserPlus, Mail, Lock, User, Camera, Ruler } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { findCountryByName, countryDatabase, type CountryData } from '@/lib/countryData';
 
 const Signup = () => {
   const navigate = useNavigate();
   const { signup } = useAuth();
   const { toast } = useToast();
-  const [email, setEmail] = useState('');
+  
+  const [fullName, setFullName] = useState('');
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [height, setHeight] = useState('');
+  const [jerseyNumber, setJerseyNumber] = useState('');
+  const [nationality, setNationality] = useState('');
+  const [nationalityFlag, setNationalityFlag] = useState('');
+  const [nationalityInput, setNationalityInput] = useState('');
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [filteredCountries, setFilteredCountries] = useState<CountryData[]>([]);
+  const [birthDay, setBirthDay] = useState('');
+  const [birthMonth, setBirthMonth] = useState('');
+  const [birthYear, setBirthYear] = useState('');
+  const [favoritePosition, setFavoritePosition] = useState('');
+  const [personalQuote, setPersonalQuote] = useState('');
+  const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
+  const [heightError, setHeightError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  const handleNationalityChange = (value: string) => {
+    setNationalityInput(value);
+    
+    if (value.trim().length > 0) {
+      const searchTerm = value.toLowerCase();
+      const matches = countryDatabase.filter(country => 
+        country.name.toLowerCase().includes(searchTerm) ||
+        country.code.toLowerCase().includes(searchTerm)
+      );
+      setFilteredCountries(matches);
+      setShowSuggestions(matches.length > 0);
+    } else {
+      setFilteredCountries([]);
+      setShowSuggestions(false);
+    }
+  };
+
+  const selectCountry = (country: CountryData) => {
+    setNationalityInput(country.name);
+    setNationality(country.name);
+    setNationalityFlag(country.flag);
+    setShowSuggestions(false);
+  };
+
+  const validateHeight = (value: string): boolean => {
+    if (!value || value === '') {
+      setHeightError('');
+      return true; // Height is optional
+    }
+    
+    if (!/^\d+$/.test(value)) {
+      setHeightError('Please enter a whole number between 0 and 250.');
+      return false;
+    }
+    
+    const numValue = parseInt(value, 10);
+    if (numValue < 0 || numValue > 250) {
+      setHeightError('Please enter a whole number between 0 and 250.');
+      return false;
+    }
+    
+    setHeightError('');
+    return true;
+  };
+
+  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfilePhoto(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const validateForm = () => {
-    if (!email || !username || !password || !confirmPassword) {
+    if (!fullName || !username || !email || !password || !confirmPassword || !nationality || !birthDay || !birthMonth || !birthYear || !favoritePosition) {
       toast({
         title: 'Error',
-        description: 'Please fill in all fields',
+        description: 'Please fill in all required fields',
         variant: 'destructive',
       });
       return false;
@@ -65,6 +141,10 @@ const Signup = () => {
       return false;
     }
 
+    if (height && !validateHeight(height)) {
+      return false;
+    }
+
     return true;
   };
 
@@ -95,13 +175,9 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-secondary/20 p-4">
-      <Card className="w-full max-w-md p-8 bg-card border-border/50">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-secondary/20 p-4 py-8">
+      <Card className="w-full max-w-2xl p-8 bg-card border-border/50">
         <div className="mb-8">
-          <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
-            <ArrowLeft className="w-4 h-4" />
-            Back to home
-          </Link>
           <div className="flex items-center gap-3 mb-2">
             <UserPlus className="w-8 h-8 text-primary" />
             <h1 className="text-3xl font-bold">Create account</h1>
@@ -110,75 +186,339 @@ const Signup = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                id="email"
-                type="email"
-                placeholder="your@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="pl-10"
-                required
-              />
-            </div>
-          </div>
+          <ScrollArea className="max-h-[60vh] pr-4">
+            <div className="space-y-4">
+              {/* Profile Photo */}
+              <div className="grid gap-2">
+                <Label>Upload Photo (Optional)</Label>
+                <div className="flex items-center gap-4">
+                  <Avatar className="w-20 h-20 border-2 border-primary/30">
+                    <AvatarImage src={profilePhoto || undefined} alt="Profile" />
+                    <AvatarFallback className="text-xl">
+                      {fullName ? fullName.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() : 'U'}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <input
+                      type="file"
+                      id="photo-upload"
+                      accept="image/*"
+                      onChange={handlePhotoUpload}
+                      className="hidden"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => document.getElementById('photo-upload')?.click()}
+                      className="gap-2"
+                    >
+                      <Camera className="w-4 h-4" />
+                      {profilePhoto ? 'Change Photo' : 'Upload Photo'}
+                    </Button>
+                    <p className="text-xs text-muted-foreground mt-1">JPG, PNG or WEBP (max 5MB)</p>
+                  </div>
+                </div>
+              </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="username">Username</Label>
-            <div className="relative">
-              <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                id="username"
-                type="text"
-                placeholder="Choose a username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="pl-10"
-                required
-                minLength={3}
-              />
-            </div>
-            <p className="text-xs text-muted-foreground">At least 3 characters</p>
-          </div>
+              {/* Full Name */}
+              <div className="space-y-2">
+                <Label htmlFor="fullName">Full Name *</Label>
+                <div className="relative">
+                  <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="fullName"
+                    type="text"
+                    placeholder="Enter your full name"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    className="pl-10"
+                    required
+                  />
+                </div>
+              </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                id="password"
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="pl-10"
-                required
-                minLength={8}
-              />
-            </div>
-            <p className="text-xs text-muted-foreground">At least 8 characters</p>
-          </div>
+              {/* Username */}
+              <div className="space-y-2">
+                <Label htmlFor="username">Username *</Label>
+                <div className="relative">
+                  <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="username"
+                    type="text"
+                    placeholder="Choose a username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="pl-10"
+                    required
+                    minLength={3}
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">At least 3 characters</p>
+              </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="confirmPassword">Confirm Password</Label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                id="confirmPassword"
-                type="password"
-                placeholder="••••••••"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="pl-10"
-                required
-              />
-            </div>
-          </div>
+              {/* Email */}
+              <div className="space-y-2">
+                <Label htmlFor="email">Email *</Label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="your@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="pl-10"
+                    required
+                  />
+                </div>
+              </div>
 
-          <Button type="submit" className="w-full" disabled={isLoading}>
+              {/* Password */}
+              <div className="space-y-2">
+                <Label htmlFor="password">Password *</Label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="pl-10"
+                    required
+                    minLength={8}
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">At least 8 characters</p>
+              </div>
+
+              {/* Confirm Password */}
+              <div className="space-y-2">
+                <Label htmlFor="confirmPassword">Confirm Password *</Label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="confirmPassword"
+                    type="password"
+                    placeholder="••••••••"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="pl-10"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Height */}
+              <div className="space-y-2">
+                <Label htmlFor="height">Height (cm) (Optional)</Label>
+                <div className="relative">
+                  <Ruler className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="height"
+                    type="text"
+                    inputMode="numeric"
+                    placeholder="e.g., 178"
+                    value={height}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value === '' || /^\d+$/.test(value)) {
+                        const numValue = value === '' ? 0 : parseInt(value, 10);
+                        if (value === '' || numValue <= 250) {
+                          setHeight(value);
+                          if (value !== '') {
+                            validateHeight(value);
+                          } else {
+                            setHeightError('');
+                          }
+                        }
+                      }
+                    }}
+                    onBlur={() => {
+                      if (height) {
+                        validateHeight(height);
+                      }
+                    }}
+                    className={`pl-10 ${heightError ? 'border-destructive' : ''}`}
+                  />
+                </div>
+                {heightError && (
+                  <p className="text-xs text-destructive">{heightError}</p>
+                )}
+              </div>
+
+              {/* Jersey Number */}
+              <div className="space-y-2">
+                <Label htmlFor="jerseyNumber">Jersey Number (Optional)</Label>
+                <Input
+                  id="jerseyNumber"
+                  type="text"
+                  inputMode="numeric"
+                  placeholder="1-99"
+                  value={jerseyNumber}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value === '' || /^\d+$/.test(value)) {
+                      const numValue = value === '' ? 0 : parseInt(value, 10);
+                      if (value === '' || (numValue >= 1 && numValue <= 99)) {
+                        setJerseyNumber(value);
+                      }
+                    }
+                  }}
+                />
+              </div>
+
+              {/* Nationality */}
+              <div className="space-y-2 relative">
+                <Label htmlFor="nationality">Nationality *</Label>
+                <Input
+                  id="nationality"
+                  placeholder="Type country name (e.g., Azerbaijan, Turkey)"
+                  value={nationalityInput}
+                  onChange={(e) => handleNationalityChange(e.target.value)}
+                  onFocus={() => nationalityInput && setShowSuggestions(true)}
+                  className="bg-background border-border"
+                  autoComplete="off"
+                  required
+                />
+                {showSuggestions && filteredCountries.length > 0 && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-card border border-primary/30 rounded-lg shadow-lg z-50 max-h-48 overflow-hidden">
+                    <ScrollArea className="h-full">
+                      {filteredCountries.map((country) => (
+                        <button
+                          key={country.code}
+                          type="button"
+                          onClick={() => selectCountry(country)}
+                          className="w-full px-4 py-2 text-left hover:bg-accent/20 transition-colors flex items-center gap-3 border-b border-border/50 last:border-0"
+                        >
+                          <span className="text-2xl">{country.flag}</span>
+                          <div className="flex-1">
+                            <span className="text-foreground font-medium">{country.name}</span>
+                            <span className="text-muted-foreground text-sm ml-2">({country.code})</span>
+                          </div>
+                        </button>
+                      ))}
+                    </ScrollArea>
+                  </div>
+                )}
+                {nationalityFlag && (
+                  <div className="text-sm text-muted-foreground flex items-center gap-2">
+                    <span>Selected:</span>
+                    <span className="text-2xl">{nationalityFlag}</span>
+                    <span>{nationality}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Birth Date */}
+              <div className="space-y-2">
+                <Label>Birth Date *</Label>
+                <div className="grid grid-cols-3 gap-2">
+                  <Input
+                    type="text"
+                    inputMode="numeric"
+                    placeholder="Day"
+                    value={birthDay}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value === '' || /^\d+$/.test(value)) {
+                        const numValue = value === '' ? 0 : parseInt(value, 10);
+                        if (value === '' || (numValue >= 1 && numValue <= 31)) {
+                          setBirthDay(value);
+                        }
+                      }
+                    }}
+                    required
+                  />
+                  <Input
+                    type="text"
+                    inputMode="numeric"
+                    placeholder="Month"
+                    value={birthMonth}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value === '' || /^\d+$/.test(value)) {
+                        const numValue = value === '' ? 0 : parseInt(value, 10);
+                        if (value === '' || (numValue >= 1 && numValue <= 12)) {
+                          setBirthMonth(value);
+                        }
+                      }
+                    }}
+                    required
+                  />
+                  <Input
+                    type="text"
+                    inputMode="numeric"
+                    placeholder="Year"
+                    value={birthYear}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value === '' || /^\d+$/.test(value)) {
+                        const numValue = value === '' ? 0 : parseInt(value, 10);
+                        if (value === '' || (numValue >= 1900 && numValue <= new Date().getFullYear())) {
+                          setBirthYear(value);
+                        }
+                      }
+                    }}
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Favorite Position */}
+              <div className="space-y-2">
+                <Label htmlFor="position">Favorite Position *</Label>
+                <Select
+                  value={favoritePosition}
+                  onValueChange={(value) => setFavoritePosition(value)}
+                  required
+                >
+                  <SelectTrigger className="bg-background border-border">
+                    <SelectValue placeholder="Select position" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="GK">GK - Goalkeeper</SelectItem>
+                    <SelectItem value="RB">RB - Right Back</SelectItem>
+                    <SelectItem value="CB">CB - Center Back</SelectItem>
+                    <SelectItem value="LB">LB - Left Back</SelectItem>
+                    <SelectItem value="RWB">RWB - Right Wing Back</SelectItem>
+                    <SelectItem value="LWB">LWB - Left Wing Back</SelectItem>
+                    <SelectItem value="CDM">CDM - Defensive Midfielder</SelectItem>
+                    <SelectItem value="CM">CM - Center Midfielder</SelectItem>
+                    <SelectItem value="CAM">CAM - Attacking Midfielder</SelectItem>
+                    <SelectItem value="RM">RM - Right Midfielder</SelectItem>
+                    <SelectItem value="LM">LM - Left Midfielder</SelectItem>
+                    <SelectItem value="RW">RW - Right Winger</SelectItem>
+                    <SelectItem value="LW">LW - Left Winger</SelectItem>
+                    <SelectItem value="ST">ST - Striker</SelectItem>
+                    <SelectItem value="CF">CF - Center Forward</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Personal Quote */}
+              <div className="space-y-2">
+                <Label htmlFor="quote">Personal Quote (Optional)</Label>
+                <Input
+                  id="quote"
+                  value={personalQuote}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value.length <= 120) {
+                      setPersonalQuote(value);
+                    }
+                  }}
+                  placeholder="Add a short motto or expression"
+                  maxLength={120}
+                />
+                <p className="text-xs text-muted-foreground">
+                  {personalQuote.length}/120 characters
+                </p>
+              </div>
+            </div>
+          </ScrollArea>
+
+          <Button type="submit" className="w-full" disabled={isLoading || !!heightError}>
             {isLoading ? 'Creating account...' : 'Create account'}
           </Button>
         </form>
