@@ -8,7 +8,6 @@ import { Card } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { UserPlus, Mail, Lock, User, Camera, Ruler } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { findCountryByName, countryDatabase, type CountryData } from '@/lib/countryData';
 
@@ -95,10 +94,22 @@ const Signup = () => {
   };
 
   const validateForm = () => {
-    if (!fullName || !username || !email || !password || !confirmPassword || !nationality || !birthDay || !birthMonth || !birthYear || !favoritePosition) {
+    const missingFields: string[] = [];
+    if (!fullName) missingFields.push('Full Name');
+    if (!username) missingFields.push('Username');
+    if (!email) missingFields.push('Email');
+    if (!password) missingFields.push('Password');
+    if (!confirmPassword) missingFields.push('Confirm Password');
+    if (!nationality) missingFields.push('Nationality');
+    if (!birthDay) missingFields.push('Birth Day');
+    if (!birthMonth) missingFields.push('Birth Month');
+    if (!birthYear) missingFields.push('Birth Year');
+    if (!favoritePosition) missingFields.push('Favorite Position');
+
+    if (missingFields.length > 0) {
       toast({
-        title: 'Error',
-        description: 'Please fill in all required fields',
+        title: 'Missing required fields',
+        description: `Please fill in: ${missingFields.join(', ')}`,
         variant: 'destructive',
       });
       return false;
@@ -185,9 +196,9 @@ const Signup = () => {
           <p className="text-muted-foreground">Join StatHub and track your football journey</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <ScrollArea className="max-h-[60vh] pr-4">
-            <div className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+          <div className="max-h-[70vh] overflow-y-auto pr-4">
+            <div className="space-y-4 pb-4">
               {/* Profile Photo */}
               <div className="grid gap-2">
                 <Label>Upload Photo (Optional)</Label>
@@ -453,10 +464,25 @@ const Signup = () => {
                     value={birthYear}
                     onChange={(e) => {
                       const value = e.target.value;
+                      // Allow empty or numeric input up to 4 digits
                       if (value === '' || /^\d+$/.test(value)) {
-                        const numValue = value === '' ? 0 : parseInt(value, 10);
-                        if (value === '' || (numValue >= 1900 && numValue <= new Date().getFullYear())) {
+                        // Allow typing up to 4 digits, validate range only when complete
+                        if (value === '' || value.length <= 4) {
                           setBirthYear(value);
+                        }
+                      }
+                    }}
+                    onBlur={(e) => {
+                      const value = e.target.value;
+                      if (value) {
+                        const numValue = parseInt(value, 10);
+                        // Validate range on blur
+                        if (numValue < 1900 || numValue > new Date().getFullYear()) {
+                          toast({
+                            title: 'Invalid year',
+                            description: `Please enter a year between 1900 and ${new Date().getFullYear()}`,
+                            variant: 'destructive',
+                          });
                         }
                       }
                     }}
@@ -516,7 +542,7 @@ const Signup = () => {
                 </p>
               </div>
             </div>
-          </ScrollArea>
+          </div>
 
           <Button type="submit" className="w-full" disabled={isLoading || !!heightError}>
             {isLoading ? 'Creating account...' : 'Create account'}
