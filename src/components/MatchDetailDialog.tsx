@@ -9,6 +9,7 @@ interface Player {
   position: string;
   rating: number;
   nationality: string;
+  goals?: number;
 }
 
 interface MatchDetailDialogProps {
@@ -44,16 +45,20 @@ export const MatchDetailDialog = ({
   awayPlayers,
   isUpcoming = false,
 }: MatchDetailDialogProps) => {
-  const PlayerList = ({ players, teamName }: { players: Player[]; teamName: string }) => (
-    <div className="space-y-3">
-      <h3 className="text-xl font-bold text-center mb-4">{teamName}</h3>
-      {players.map((player) => (
+  const PlayerList = ({ players, teamName }: { players: Player[]; teamName: string }) => {
+    // Sort players by rating (highest to lowest) for past matches
+    const sortedPlayers = [...players].sort((a, b) => b.rating - a.rating);
+    
+    return (
+      <div className="space-y-3">
+        <h3 className="text-xl font-bold text-center mb-4">{teamName}</h3>
+        {sortedPlayers.map((player, index) => (
         <div
-          key={player.rank}
+          key={`${player.name}-${index}`}
           className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
         >
           <div className="flex items-center justify-center w-10 h-10 rounded-full border-2 border-border bg-background">
-            <span className="font-bold text-sm">{player.rank}</span>
+            <span className="font-bold text-sm">{index + 1}</span>
           </div>
           <Avatar className="w-12 h-12 border-2 border-border">
             <AvatarFallback className="bg-muted text-xs">
@@ -67,13 +72,23 @@ export const MatchDetailDialog = ({
             <p className="font-semibold">{player.name}</p>
             <p className="text-xs text-muted-foreground">{player.position}</p>
           </div>
-          <Badge className={`${isUpcoming ? 'bg-muted text-muted-foreground' : getRatingColor(player.rating)} ${isUpcoming ? '' : 'text-white'} border-0 text-base font-bold px-3 py-1`}>
-            {isUpcoming ? '-' : player.rating.toFixed(2)}
-          </Badge>
+          <div className="flex items-center gap-2">
+            {!isUpcoming && player.goals !== undefined && player.goals > 0 && (
+              <div className="flex items-center gap-1">
+                {Array.from({ length: player.goals }).map((_, i) => (
+                  <span key={i} className="text-lg">⚽</span>
+                ))}
+              </div>
+            )}
+            <Badge className={`${isUpcoming ? 'bg-muted text-muted-foreground' : getRatingColor(player.rating)} ${isUpcoming ? '' : 'text-white'} border-0 text-base font-bold px-3 py-1`}>
+              {isUpcoming ? '-' : player.rating.toFixed(2)}
+            </Badge>
+          </div>
         </div>
       ))}
-    </div>
-  );
+      </div>
+    );
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -91,14 +106,48 @@ export const MatchDetailDialog = ({
           </div>
         </DialogHeader>
 
-        <div className="grid md:grid-cols-2 gap-6 mt-6">
-          <Card className="p-4 bg-gradient-to-br from-card to-card/50">
-            <PlayerList players={homePlayers} teamName={homeTeam} />
+        {isUpcoming ? (
+          // Flat list for upcoming matches
+          <Card className="p-4 bg-gradient-to-br from-card to-card/50 mt-6">
+            <div className="space-y-3">
+              {[...homePlayers, ...awayPlayers].map((player, index) => (
+                <div
+                  key={index}
+                  className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
+                >
+                  <div className="flex items-center justify-center w-10 h-10 rounded-full border-2 border-border bg-background">
+                    <span className="font-bold text-sm">{index + 1}</span>
+                  </div>
+                  <Avatar className="w-12 h-12 border-2 border-border">
+                    <AvatarFallback className="bg-muted text-xs">
+                      {player.name.split(" ").map(n => n[0]).join("")}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">{player.nationality}</span>
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-semibold">{player.name}</p>
+                    <p className="text-xs text-muted-foreground">{player.position}</p>
+                  </div>
+                  <Badge className="bg-muted text-muted-foreground border-0 text-base font-bold px-3 py-1">
+                    -
+                  </Badge>
+                </div>
+              ))}
+            </div>
           </Card>
-          <Card className="p-4 bg-gradient-to-br from-card to-card/50">
-            <PlayerList players={awayPlayers} teamName={awayTeam} />
-          </Card>
-        </div>
+        ) : (
+          // Squad separation for past matches
+          <div className="grid md:grid-cols-2 gap-6 mt-6">
+            <Card className="p-4 bg-gradient-to-br from-card to-card/50">
+              <PlayerList players={homePlayers} teamName={homeTeam} />
+            </Card>
+            <Card className="p-4 bg-gradient-to-br from-card to-card/50">
+              <PlayerList players={awayPlayers} teamName={awayTeam} />
+            </Card>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );

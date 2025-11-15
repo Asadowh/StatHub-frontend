@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
-import { Trophy, TrendingUp, TrendingDown, Search, Loader2 } from "lucide-react";
+import { Trophy, Search, Loader2 } from "lucide-react";
 import { CountryBadge } from "@/components/CountryBadge";
 import defaultAvatar from "@/assets/default-avatar.png";
 
@@ -161,7 +161,6 @@ const Leaderboard = () => {
                   <th className="px-6 py-4 text-left text-sm font-semibold">Player</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold">Position</th>
                   <th className="px-6 py-4 text-right text-sm font-semibold">Points</th>
-                  <th className="px-6 py-4 text-center text-sm font-semibold">Trend</th>
                 </tr>
               </thead>
               <tbody>
@@ -201,11 +200,6 @@ const Leaderboard = () => {
                     <td className="px-6 py-4 text-muted-foreground">{player.position}</td>
                     <td className="px-6 py-4 text-right">
                       <span className="font-bold text-lg text-primary">{player.points}</span>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      {player.trend === "up" && <TrendingUp className="w-5 h-5 text-green-500 mx-auto" />}
-                      {player.trend === "down" && <TrendingDown className="w-5 h-5 text-red-500 mx-auto" />}
-                      {player.trend === "same" && <span className="text-muted-foreground">—</span>}
                     </td>
                   </tr>
                 ))}
