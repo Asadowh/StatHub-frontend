@@ -284,12 +284,20 @@ const Matches = () => {
           </Card>
         ) : (
           <Card className="relative overflow-hidden bg-gradient-to-br from-card to-card/50 border-border/50">
-            <div className="p-12 text-center">
-              <div className="w-32 h-32 mx-auto mb-6 bg-gradient-to-br from-primary/10 to-primary/5 rounded-full flex items-center justify-center">
-                <Trophy className="w-16 h-16 text-primary/50" />
+            <div className="relative">
+              {/* Random sports-themed placeholder image */}
+              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1923&auto=format&fit=crop')] bg-cover bg-center opacity-20" />
+              <div className="relative p-12 text-center">
+                <div className="w-full max-w-md mx-auto mb-6 rounded-lg overflow-hidden shadow-lg">
+                  <img 
+                    src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1923&auto=format&fit=crop" 
+                    alt="Football field" 
+                    className="w-full h-48 object-cover"
+                  />
+                </div>
+                <h2 className="text-2xl font-bold mb-2">No future games scheduled yet.</h2>
+                <p className="text-muted-foreground">Check back later for upcoming match announcements.</p>
               </div>
-              <h2 className="text-2xl font-bold mb-2">No future games scheduled yet.</h2>
-              <p className="text-muted-foreground">Check back later for upcoming match announcements.</p>
             </div>
           </Card>
         )}
