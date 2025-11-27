@@ -33,10 +33,25 @@ interface EditProfileModalProps {
 export const EditProfileModal = ({ profileData, onSave }: EditProfileModalProps) => {
   const [formData, setFormData] = useState(profileData);
   const [open, setOpen] = useState(false);
-  const [nationalityInput, setNationalityInput] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredCountries, setFilteredCountries] = useState<CountryData[]>([]);
   const [heightError, setHeightError] = useState("");
+
+  // Initialize nationality input from the country code
+  const getCountryNameFromCode = (code: string) => {
+    const country = countryDatabase.find(c => c.code === code);
+    return country ? country.name : code;
+  };
+  
+  const [nationalityInput, setNationalityInput] = useState(
+    profileData.nationality ? getCountryNameFromCode(profileData.nationality) : ""
+  );
+
+  // Sync form data when profileData changes
+  useEffect(() => {
+    setFormData(profileData);
+    setNationalityInput(profileData.nationality ? getCountryNameFromCode(profileData.nationality) : "");
+  }, [profileData]);
 
   const handleNationalityChange = (value: string) => {
     setNationalityInput(value);
@@ -57,7 +72,8 @@ export const EditProfileModal = ({ profileData, onSave }: EditProfileModalProps)
 
   const selectCountry = (country: CountryData) => {
     setNationalityInput(country.name);
-    setFormData({ ...formData, nationality: country.flag });
+    // Store the country CODE, not the flag emoji - this is what the backend expects
+    setFormData({ ...formData, nationality: country.code });
     setShowSuggestions(false);
   };
 
@@ -224,7 +240,17 @@ export const EditProfileModal = ({ profileData, onSave }: EditProfileModalProps)
               {formData.nationality && (
                 <div className="text-sm text-muted-foreground flex items-center gap-2">
                   <span>Selected:</span>
-                  <span className="text-2xl">{formData.nationality}</span>
+                  {(() => {
+                    const country = countryDatabase.find(c => c.code === formData.nationality);
+                    return country ? (
+                      <>
+                        <span className="text-2xl">{country.flag}</span>
+                        <span className="font-medium">{country.name}</span>
+                      </>
+                    ) : (
+                      <span className="font-medium">{formData.nationality}</span>
+                    );
+                  })()}
                 </div>
               )}
             </div>

@@ -12,7 +12,7 @@ const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const { toast } = useToast();
-  const [email, setEmail] = useState('');
+  const [credential, setCredential] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -20,7 +20,7 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    if (!email || !password) {
+    if (!credential || !password) {
       toast({
         title: 'Error',
         description: 'Please fill in all fields',
@@ -30,7 +30,7 @@ const Login = () => {
       return;
     }
 
-    const result = await login(email, password);
+    const result = await login(credential, password);
     setIsLoading(false);
 
     if (result.success) {
@@ -61,15 +61,15 @@ const Login = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="credential">Email or Username</Label>
             <div className="relative">
               <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
-                id="email"
-                type="email"
-                placeholder="your@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                id="credential"
+                type="text"
+                placeholder="your@email.com or username"
+                value={credential}
+                onChange={(e) => setCredential(e.target.value)}
                 className="pl-10"
                 required
               />

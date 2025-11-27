@@ -167,7 +167,33 @@ const Signup = () => {
     }
 
     setIsLoading(true);
-    const result = await signup(email, username, password);
+
+    // Create FormData for multipart upload
+    const formData = new FormData();
+    formData.append('full_name', fullName);
+    formData.append('username', username);
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('confirm_password', confirmPassword);
+    formData.append('nationality', nationality);
+    
+    // Format birth date as YYYY-MM-DD
+    const birthDate = `${birthYear}-${birthMonth.padStart(2, '0')}-${birthDay.padStart(2, '0')}`;
+    formData.append('birth_date', birthDate);
+    
+    formData.append('favorite_position', favoritePosition);
+    
+    if (height) formData.append('height', height);
+    if (jerseyNumber) formData.append('jersey_number', jerseyNumber);
+    if (personalQuote) formData.append('personal_quote', personalQuote);
+    
+    // Handle photo upload
+    const photoInput = document.getElementById('photo-upload') as HTMLInputElement;
+    if (photoInput?.files?.[0]) {
+      formData.append('photo', photoInput.files[0]);
+    }
+
+    const result = await signup(formData);
     setIsLoading(false);
 
     if (result.success) {

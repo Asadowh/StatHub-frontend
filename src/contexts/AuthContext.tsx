@@ -1,133 +1,102 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-
-interface User {
-  id: string;
-  email: string;
-  username: string;
-  fullName: string;
-}
+import { authApi, userApi, getToken, removeToken, type User } from '@/lib/api';
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
-  signup: (email: string, username: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  isLoading: boolean;
+  login: (credential: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  signup: (formData: FormData) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
   resetPassword: (email: string) => Promise<{ success: boolean; error?: string }>;
   changePassword: (currentPassword: string, newPassword: string) => Promise<{ success: boolean; error?: string }>;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Check for existing session on mount
   useEffect(() => {
-    const storedUser = localStorage.getItem('stathub_user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
+    const initAuth = async () => {
+      const token = getToken();
+      if (token) {
+        try {
+          const userData = await userApi.getMe();
+          setUser(userData);
+        } catch (error) {
+          // Token invalid or expired
+          removeToken();
+        }
+      }
+      setIsLoading(false);
+    };
+
+    initAuth();
   }, []);
 
-  const login = async (email: string, password: string) => {
-    // Simulate API call - in real app, this would call backend
-    const storedUsers = JSON.parse(localStorage.getItem('stathub_users') || '[]');
-    const foundUser = storedUsers.find(
-      (u: any) => u.email === email && u.password === password
-    );
-
-    if (foundUser) {
-      const userSession = {
-        id: foundUser.id,
-        email: foundUser.email,
-        username: foundUser.username,
-        fullName: foundUser.fullName,
-      };
-      setUser(userSession);
-      localStorage.setItem('stathub_user', JSON.stringify(userSession));
-      return { success: true };
+  const refreshUser = async () => {
+    try {
+      const userData = await userApi.getMe();
+      setUser(userData);
+    } catch (error) {
+      setUser(null);
+      removeToken();
     }
-
-    return { success: false, error: 'Invalid email or password' };
   };
 
-  const signup = async (email: string, username: string, password: string) => {
-    // Simulate API call - check if user already exists
-    const storedUsers = JSON.parse(localStorage.getItem('stathub_users') || '[]');
-    const existingUser = storedUsers.find(
-      (u: any) => u.email === email || u.username === username
-    );
-
-    if (existingUser) {
+  const login = async (credential: string, password: string) => {
+    try {
+      await authApi.login(credential, password);
+      const userData = await userApi.getMe();
+      setUser(userData);
+      return { success: true };
+    } catch (error) {
       return { 
         success: false, 
-        error: existingUser.email === email 
-          ? 'Email already registered' 
-          : 'Username already taken' 
+        error: error instanceof Error ? error.message : 'Login failed' 
       };
     }
+  };
 
-    // Create new user
-    const newUser = {
-      id: Date.now().toString(),
-      email,
-      username,
-      password, // In real app, this would be hashed on backend
-      fullName: username, // Default full name to username
-    };
-
-    storedUsers.push(newUser);
-    localStorage.setItem('stathub_users', JSON.stringify(storedUsers));
-
-    // Auto-login after signup
-    const userSession = {
-      id: newUser.id,
-      email: newUser.email,
-      username: newUser.username,
-      fullName: newUser.fullName,
-    };
-    setUser(userSession);
-    localStorage.setItem('stathub_user', JSON.stringify(userSession));
-
-    return { success: true };
+  const signup = async (formData: FormData) => {
+    try {
+      await authApi.register(formData);
+      const userData = await userApi.getMe();
+      setUser(userData);
+      return { success: true };
+    } catch (error) {
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Signup failed' 
+      };
+    }
   };
 
   const logout = () => {
+    authApi.logout();
     setUser(null);
-    localStorage.removeItem('stathub_user');
   };
 
   const resetPassword = async (email: string) => {
-    // Simulate sending reset email
-    const storedUsers = JSON.parse(localStorage.getItem('stathub_users') || '[]');
-    const userExists = storedUsers.some((u: any) => u.email === email);
-
-    if (userExists) {
+    try {
+      await authApi.forgotPassword(email);
       return { success: true };
+    } catch (error) {
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Reset password failed' 
+      };
     }
-
-    return { success: false, error: 'Email not found' };
   };
 
   const changePassword = async (currentPassword: string, newPassword: string) => {
-    if (!user) return { success: false, error: 'Not authenticated' };
-
-    const storedUsers = JSON.parse(localStorage.getItem('stathub_users') || '[]');
-    const userIndex = storedUsers.findIndex((u: any) => u.id === user.id);
-
-    if (userIndex === -1) {
-      return { success: false, error: 'User not found' };
-    }
-
-    if (storedUsers[userIndex].password !== currentPassword) {
-      return { success: false, error: 'Current password is incorrect' };
-    }
-
-    storedUsers[userIndex].password = newPassword;
-    localStorage.setItem('stathub_users', JSON.stringify(storedUsers));
-
-    return { success: true };
+    // This would need a backend endpoint - for now just return success
+    // TODO: Implement when backend has change password endpoint
+    return { success: false, error: 'Not implemented yet' };
   };
 
   return (
@@ -135,11 +104,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       value={{
         user,
         isAuthenticated: !!user,
+        isLoading,
         login,
         signup,
         logout,
         resetPassword,
         changePassword,
+        refreshUser,
       }}
     >
       {children}
